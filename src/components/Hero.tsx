@@ -1,8 +1,12 @@
 "use client";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { FiHeadphones, FiMail, FiPhoneCall } from "react-icons/fi";
 import { Social } from "~/../typings";
 import { getIcon } from "~/sanity/utils/iconMapper";
+import { HeroHighlight, Highlight } from "./ui/hero-highlight";
+import { TextGenerateEffect } from "./ui/text-generate-effect";
+import { Button } from "./ui/moving-border";
+import { SparklesCore } from "./ui/sparkles";
 
 interface HeroProps {
   socials: Social[];
@@ -19,8 +23,19 @@ export default function Hero({ socials }: HeroProps) {
   };
   return (
     <section className="relative h-[100svh] min-h-[620px] w-full overflow-hidden">
+      <div className="absolute inset-0 h-full w-full z-10">
+        <SparklesCore
+          id="tsparticlesfullpage"
+          background="transparent"
+          minSize={0.6}
+          maxSize={1.4}
+          particleDensity={100}
+          className="h-full w-full"
+          particleColor="#FFFFFF"
+        />
+      </div>
       {/* Background video */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden z-0">
         <video
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover"
           src="/assets/sample_1.mp4"
@@ -36,30 +51,20 @@ export default function Hero({ socials }: HeroProps) {
         <div className="absolute inset-0 [background:radial-gradient(60%_60%_at_20%_30%,rgba(42,227,148,0.12),transparent_60%)]" />
       </div>
 
-      <div className="relative h-full container mx-auto px-4 flex items-center justify-start">
+      <div className="relative h-full container mx-auto flex items-start sm:items-center justify-start px-4 pt-20 pb-24 sm:pt-0 sm:pb-0">
         {/* Left: Messaging */}
-        <div className="max-w-2xl text-left">
-          <motion.h1
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ delay: 0.05, duration: 0.6, ease: "easeOut" }}
-            className="mt-4 text-5xl sm:text-6xl md:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl"
-          >
-            <span className="text-accent drop-shadow-lg">Elevate</span>{" "}
-            Experience
-          </motion.h1>
+        <div className="w-full max-w-2xl text-left break-words">
+          <HeroHighlight containerClassName="justify-start">
+            <TextGenerateEffect
+              words="Elevate Experience"
+              className="mt-4 text-4xl sm:text-6xl md:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl"
+            />
+          </HeroHighlight>
 
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ delay: 0.15, duration: 0.6, ease: "easeOut" }}
+          <TextGenerateEffect
+            words="Design, installation, and maintenance engineered for precision, safety, and seamless passenger experience."
             className="mt-5 text-lg md:text-2xl text-white font-medium max-w-[46ch] drop-shadow-lg"
-          >
-            Design, installation, and maintenance engineered for precision,
-            safety, and seamless passenger experience.
-          </motion.p>
+          />
 
           <motion.div
             initial={{ opacity: 0, y: 14 }}
@@ -97,7 +102,7 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.5, duration: 0.5 }}
-            className="mt-9 h-px w-full max-w-sm bg-gradient-to-r from-white/0 via-white/60 to-white/0"
+            className="mt-3 h-px w-full max-w-sm bg-gradient-to-r from-white/0 via-white/60 to-white/0"
             aria-hidden
           />
 
@@ -107,29 +112,31 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.32, duration: 0.6, ease: "easeOut" }}
-            className="mt-10"
+            className="mt-8"
           >
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-3 text-sm text-white/80">
-              <span className="text-xs uppercase tracking-[0.28em] text-white/60">
+            <div className="flex items-start gap-4 text-sm text-white/80">
+              <span className="text-xs uppercase tracking-[0.28em] text-white/60 pt-1.5">
                 Connect
               </span>
-              {socials?.map((social) => {
-                const Icon = getIcon(social.icon);
-                return (
-                  <a
-                    key={social._id}
-                    href={social.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
-                  >
-                    {Icon && (
-                      <Icon className="text-lg text-accent" aria-hidden />
-                    )}
-                    <span>{social.title}</span>
-                  </a>
-                );
-              })}
+              <div className="flex flex-wrap gap-x-4 gap-y-3">
+                {socials?.map((social) => {
+                  const Icon = getIcon(social.icon);
+                  return (
+                    <a
+                      key={social._id}
+                      href={social.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
+                    >
+                      {Icon && (
+                        <Icon className="text-lg text-accent" aria-hidden />
+                      )}
+                      <span>{social.title}</span>
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </motion.div>
 
@@ -139,11 +146,11 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.42, duration: 0.6, ease: "easeOut" }}
-            className="mt-4 flex flex-wrap gap-3 text-white/90"
+            className="mt-7 flex flex-col sm:flex-row flex-wrap items-center sm:items-start gap-2 text-white/90"
           >
             <a
               href="tel:18008908411"
-              className="flex items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text whitespace-nowrap"
+              className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text"
             >
               <FiHeadphones
                 className="mt-0.5 shrink-0 text-2xl text-accent"
@@ -160,7 +167,7 @@ export default function Hero({ socials }: HeroProps) {
             </a>
             <a
               href="mailto:info@liftronicelevator.com"
-              className="flex items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text whitespace-nowrap"
+              className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text"
             >
               <FiMail
                 className="mt-0.5 shrink-0 text-2xl text-accent"
@@ -175,7 +182,7 @@ export default function Hero({ socials }: HeroProps) {
                 </span>
               </div>
             </a>
-            <div className="flex items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus-within:outline-none focus-within:ring-2 focus-within:ring-white/60 select-text whitespace-nowrap">
+            <div className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus-within:outline-none focus-within:ring-2 focus-within:ring-white/60 select-text">
               <FiPhoneCall
                 className="mt-0.5 shrink-0 text-2xl text-accent"
                 aria-hidden

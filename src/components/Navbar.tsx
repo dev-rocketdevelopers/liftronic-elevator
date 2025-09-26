@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { href: "/products", label: "Products" },
@@ -128,7 +128,7 @@ export default function Navbar() {
         }`}
       >
         <div
-          className={`rounded-2xl transition-all duration-700 ease-in-out ${
+          className={`rounded-2xl transition-all duration-700 ease-in-out relative ${
             scrolled ? "glass-solid shadow-elevate" : "glass-transparent"
           }`}
         >

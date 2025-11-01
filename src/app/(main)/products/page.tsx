@@ -37,7 +37,7 @@ export default async function ProductsPage() {
       <ProductsHero />
 
       {/* Product Ranges with Carousels */}
-      <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50/30 to-white">
+      <section className="pt-0 pb-12 md:pt-16 md:pb-16 bg-gradient-to-br from-gray-50/30 to-white">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
             {productRanges.map((range) => (

@@ -16,7 +16,7 @@ export default function ProductsHero() {
       />
 
       {/* Content overlay */}
-      <div className="relative z-10 container mx-auto px-6 py-16 md:pt-28 md:pb-20">
+      <div className="relative z-10 container mx-auto px-6 py-8 md:pt-28 md:pb-20">
         <Breadcrumb
           items={[
             { label: "Home", href: "/" },
@@ -24,7 +24,7 @@ export default function ProductsHero() {
           ]}
         />
 
-        <div className="max-w-3xl mt-10">
+        <div className="hidden md:block max-w-3xl mt-10">
           <p className="text-sm font-semibold tracking-wide text-gray-500">
             Our Product Ranges
           </p>

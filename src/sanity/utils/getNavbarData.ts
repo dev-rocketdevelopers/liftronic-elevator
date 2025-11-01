@@ -40,12 +40,14 @@ const navbarDataQuery = groq`{
       featured
     }
   },
-  "services": *[_type == "serviceOffered"] | order(featured desc, _createdAt desc) {
+  "services": *[_type == "service"] | order(featured desc, _createdAt desc) {
     _id,
     title,
     "slug": slug.current,
-    shortDescription,
-    icon,
+    summary,
+    "image": image.asset->url + "?w=400&h=300&fit=crop&auto=format&fm=webp&q=80",
+    "imageLqip": image.asset->metadata.lqip,
+    "imageAlt": image.alt,
     featured
   }[0...12],
   "contactInfo": *[_type == "contactInfo"][0]{

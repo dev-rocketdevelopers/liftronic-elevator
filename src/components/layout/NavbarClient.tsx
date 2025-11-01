@@ -299,7 +299,11 @@ export default function NavbarClient({ megaMenuData }: NavbarClientProps) {
               />
             )}
             {megaMenuState.activeMenu === "services" && (
-              <MegaMenuServices services={megaMenuData.services} />
+              <MegaMenuServices
+                services={megaMenuData.services}
+                contactInfo={megaMenuData.contactInfo}
+                onNavigate={closeImmediate}
+              />
             )}
           </MegaMenuWrapper>
         </div>

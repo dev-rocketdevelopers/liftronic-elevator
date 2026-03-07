@@ -1,8 +1,10 @@
 import { groq } from "next-sanity";
+import { cache } from "react";
 import { Product } from "../../../typings";
 import { client } from "../lib/client";
+import { sanityFetchOptions } from "../lib/fetchOptions";
 
-export async function getProducts(): Promise<Product[]> {
+export const getProducts = cache(async (): Promise<Product[]> => {
   const query = groq`*[_type == "product"]{
     _id,
     title,
@@ -29,5 +31,5 @@ export async function getProducts(): Promise<Product[]> {
       value
     }
   }`;
-  return client.fetch<Product[]>(query);
-}
+  return client.fetch<Product[]>(query, {}, sanityFetchOptions);
+});

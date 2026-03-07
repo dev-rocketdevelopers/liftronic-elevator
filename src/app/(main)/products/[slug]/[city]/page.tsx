@@ -1,30 +1,23 @@
+import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { client } from "~/sanity/lib/client";
 import { groq } from "next-sanity";
-import type { PortableTextBlock } from "@portabletext/types";
-import ProductPageClient from "../ProductPageClient";
+import ProductDetailContent, {
+  type LocationPageData,
+} from "~/components/products/ProductDetailContent";
+import { sanityFetchOptions } from "~/sanity/lib/fetchOptions";
 import type { ProductFull } from "~/sanity/lib/productTypes";
-
-interface LocationPageData {
-  city: string;
-  citySlug: string;
-  uniqueContent: PortableTextBlock[];
-  metaTitle: string;
-  metaDescription: string;
-  keywords?: string[];
-  published: boolean;
-  enableIndexing: boolean;
-}
 
 interface ProductWithLocation extends ProductFull {
   locationPage: LocationPageData;
 }
 
-async function getProductWithLocation(
-  productSlug: string,
-  citySlug: string
-): Promise<ProductWithLocation | null> {
+const getProductWithLocation = cache(
+  async (
+    productSlug: string,
+    citySlug: string,
+  ): Promise<ProductWithLocation | null> => {
   const query = groq`*[_type == "product" && slug.current == $productSlug][0] {
     _id,
     _createdAt,
@@ -76,7 +69,7 @@ async function getProductWithLocation(
   const product = await client.fetch(
     query,
     { productSlug, citySlug },
-    { next: { revalidate: 3600 } }
+      sanityFetchOptions,
   );
 
   if (!product || !product.locationPage || !product.locationPage.published) {
@@ -84,9 +77,10 @@ async function getProductWithLocation(
   }
 
   return product;
-}
+  },
+);
 
-async function getAllLocationProductParams() {
+const getAllLocationProductParams = cache(async () => {
   const query = groq`*[_type == "product" && defined(locationPages)] {
     "productSlug": slug.current,
     "cities": locationPages[published == true] {
@@ -97,7 +91,7 @@ async function getAllLocationProductParams() {
   const products = await client.fetch(
     query,
     {},
-    { next: { revalidate: 3600 } }
+    sanityFetchOptions,
   );
 
   const params: { slug: string; city: string }[] = [];
@@ -114,7 +108,7 @@ async function getAllLocationProductParams() {
   }
 
   return params;
-}
+});
 
 type Props = {
   params: Promise<{
@@ -267,7 +261,7 @@ export default async function LocationProductPage({ params }: Props) {
 
       <main>
         {/* Main Product Page with location content after FAQ */}
-        <ProductPageClient product={product} locationPage={locationPage} />
+        <ProductDetailContent product={product} locationPage={locationPage} />
       </main>
     </>
   );
@@ -279,3 +273,4 @@ export async function generateStaticParams() {
 }
 
 export const revalidate = 3600; // 60 minutes
+export const dynamicParams = false;

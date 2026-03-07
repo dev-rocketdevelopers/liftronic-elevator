@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ServicePageClient from "./ServicePageClient";
+import ServiceDetailContent from "~/components/services/ServiceDetailContent";
 import { getServiceBySlug, getServiceSlugs } from "~/sanity/utils/getServices";
 import { ServiceOfferedFull } from "~/sanity/lib/serviceTypes";
 
@@ -58,6 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // ISR: Revalidate every 60 minutes (3600 seconds)
 export const revalidate = 3600;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const slugs = await getServiceSlugs();
@@ -151,7 +152,7 @@ export default async function ServicePage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-      <ServicePageClient service={service} />
+      <ServiceDetailContent service={service} />
     </>
   );
 }

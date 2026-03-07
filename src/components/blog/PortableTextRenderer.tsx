@@ -84,6 +84,7 @@ const components: PortableTextComponents = {
             alt={value.alt || "Blog post image"}
             width={800}
             height={600}
+            sizes="(min-width: 1024px) 800px, 100vw"
             className="w-full h-auto"
           />
           {value.alt && (

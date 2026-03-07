@@ -63,7 +63,6 @@ export const privateExperienceFormSchema = z.object({
       },
       "Please enter a valid Indian phone number (10 digits starting with 6-9)"
     ),
-  productInterest: z.string().min(1, "Please select a product"),
   company: z.string().optional(),
   branchName: z.string(),
   branchSlug: z.string(),

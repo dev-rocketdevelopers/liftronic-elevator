@@ -1,8 +1,10 @@
 import { groq } from "next-sanity";
+import { cache } from "react";
 import { Social } from "../../../typings";
 import { client } from "../lib/client";
+import { sanityFetchOptions } from "../lib/fetchOptions";
 
-export async function getSocial(): Promise<Social[]> {
+export const getSocial = cache(async (): Promise<Social[]> => {
   const query = groq`*[_type == "social"]{
     _id,
     title,
@@ -14,5 +16,5 @@ export async function getSocial(): Promise<Social[]> {
       slug
     }
   }`;
-  return client.fetch<Social[]>(query);
-}
+  return client.fetch<Social[]>(query, {}, sanityFetchOptions);
+});

@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    // Enable React's experimental View Transitions integration
-    viewTransition: true,
-  },
+  compress: false,
   images: {
     remotePatterns: [
       {
@@ -24,6 +21,30 @@ const nextConfig: NextConfig = {
   // New URLs: /products/[productSlug] and /products/[productSlug]/[city]
   async redirects() {
     return [
+      {
+        source: "/blogs",
+        has: [
+          {
+            type: "query",
+            key: "page",
+            value: "1",
+          },
+        ],
+        destination: "/blogs",
+        permanent: true,
+      },
+      {
+        source: "/blogs",
+        has: [
+          {
+            type: "query",
+            key: "page",
+            value: "(?<page>[2-9][0-9]*)",
+          },
+        ],
+        destination: "/blogs/page/:page",
+        permanent: true,
+      },
       {
         source: "/products/:rangeSlug/:productSlug/:city",
         destination: "/products/:productSlug/:city",

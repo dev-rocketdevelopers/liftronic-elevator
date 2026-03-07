@@ -11,7 +11,6 @@ interface BranchStiltzExperienceProps {
   bookingSection?: BookingSection;
   branchSlug?: string;
   branchName?: string;
-  productOptions: string[];
   bgVariant?: "white" | "soft";
 }
 
@@ -20,7 +19,6 @@ export default function BranchStiltzExperience({
   bookingSection,
   branchSlug,
   branchName,
-  productOptions,
   bgVariant = "white",
 }: BranchStiltzExperienceProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -134,7 +132,6 @@ export default function BranchStiltzExperience({
         onClose={() => setIsModalOpen(false)}
         branchName={branchName || ""}
         branchSlug={branchSlug || ""}
-        productOptions={productOptions}
       />
     </section>
   );

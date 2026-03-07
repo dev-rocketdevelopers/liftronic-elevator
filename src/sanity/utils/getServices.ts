@@ -1,9 +1,11 @@
 import { groq } from "next-sanity";
+import { cache } from "react";
 import { client } from "../lib/client";
+import { sanityFetchOptions } from "../lib/fetchOptions";
 import { ServiceOffered, ServiceOfferedFull } from "../lib/serviceTypes";
 
 // Get all services for listing page with lazy loading support
-export async function getServices(): Promise<ServiceOffered[]> {
+export const getServices = cache(async (): Promise<ServiceOffered[]> => {
   const query = groq`*[_type == "service"] | order(_createdAt desc) {
     _id,
     _createdAt,
@@ -18,11 +20,11 @@ export async function getServices(): Promise<ServiceOffered[]> {
     featured
   }`;
 
-  return client.fetch<ServiceOffered[]>(query);
-}
+  return client.fetch<ServiceOffered[]>(query, {}, sanityFetchOptions);
+});
 
 // Get featured services only
-export async function getFeaturedServices(): Promise<ServiceOffered[]> {
+export const getFeaturedServices = cache(async (): Promise<ServiceOffered[]> => {
   const query = groq`*[_type == "service" && featured == true] | order(_createdAt desc) {
     _id,
     _createdAt,
@@ -37,13 +39,12 @@ export async function getFeaturedServices(): Promise<ServiceOffered[]> {
     featured
   }`;
 
-  return client.fetch<ServiceOffered[]>(query);
-}
+  return client.fetch<ServiceOffered[]>(query, {}, sanityFetchOptions);
+});
 
 // Get service by slug for detail page
-export async function getServiceBySlug(
-  slug: string
-): Promise<ServiceOfferedFull | null> {
+export const getServiceBySlug = cache(
+  async (slug: string): Promise<ServiceOfferedFull | null> => {
   const query = groq`*[_type == "service" && slug.current == $slug][0]{
     _id,
     _createdAt,
@@ -80,15 +81,21 @@ export async function getServiceBySlug(
     }
   }`;
 
-  return client.fetch<ServiceOfferedFull | null>(query, { slug });
-}
+    return client.fetch<ServiceOfferedFull | null>(
+      query,
+      { slug },
+      sanityFetchOptions,
+    );
+  },
+);
 
 // Get services by tags with pagination support
-export async function getServicesByTag(
-  tag: string,
-  limit = 10,
-  offset = 0
-): Promise<ServiceOffered[]> {
+export const getServicesByTag = cache(
+  async (
+    tag: string,
+    limit = 10,
+    offset = 0,
+  ): Promise<ServiceOffered[]> => {
   const query = groq`*[_type == "service" && $tagName in tags] | order(_createdAt desc) [$offset...($offset + $limit)] {
     _id,
     _createdAt,
@@ -103,21 +110,28 @@ export async function getServicesByTag(
     featured
   }`;
 
-  return client.fetch<ServiceOffered[]>(query, { tagName: tag, limit, offset });
-}
+    return client.fetch<ServiceOffered[]>(
+      query,
+      { tagName: tag, limit, offset },
+      sanityFetchOptions,
+    );
+  },
+);
 
 // Generate static params for service pages
-export async function getServiceSlugs(): Promise<string[]> {
+export const getServiceSlugs = cache(async (): Promise<string[]> => {
   const query = groq`*[_type == "service"]{"slug": slug.current}`;
-  const services = await client.fetch<{ slug: string }[]>(query);
+  const services = await client.fetch<{ slug: string }[]>(
+    query,
+    {},
+    sanityFetchOptions,
+  );
   return services.map((service) => service.slug);
-}
+});
 
 // Get services with pagination for lazy loading
-export async function getServicesPage(
-  limit = 6,
-  offset = 0
-): Promise<ServiceOffered[]> {
+export const getServicesPage = cache(
+  async (limit = 6, offset = 0): Promise<ServiceOffered[]> => {
   const query = groq`*[_type == "service"] | order(_createdAt desc) [$offset...($offset + $limit)] {
     _id,
     _createdAt,
@@ -132,5 +146,10 @@ export async function getServicesPage(
     featured
   }`;
 
-  return client.fetch<ServiceOffered[]>(query, { limit, offset });
-}
+    return client.fetch<ServiceOffered[]>(
+      query,
+      { limit, offset },
+      sanityFetchOptions,
+    );
+  },
+);

@@ -13,13 +13,11 @@ import {
 interface PrivateExperienceFormProps {
   branchName: string;
   branchSlug: string;
-  productOptions: string[];
 }
 
 export default function PrivateExperienceForm({
   branchName,
   branchSlug,
-  productOptions,
 }: PrivateExperienceFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
@@ -156,35 +154,6 @@ export default function PrivateExperienceForm({
           />
           {errors.phone && (
             <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
-          )}
-        </div>
-
-        {/* Product Interest Dropdown */}
-        <div>
-          <label
-            htmlFor="pe-product-interest"
-            className="mb-1 block text-sm font-medium text-gray-700"
-          >
-            Product Interest <span className="text-accent">*</span>
-          </label>
-          <select
-            id="pe-product-interest"
-            {...register("productInterest")}
-            className={`w-full rounded-lg border px-4 py-3 ${
-              errors.productInterest ? "border-red-500" : "border-gray-300"
-            } transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-accent bg-white`}
-          >
-            <option value="">Select a product</option>
-            {productOptions.map((product) => (
-              <option key={product} value={product}>
-                {product}
-              </option>
-            ))}
-          </select>
-          {errors.productInterest && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.productInterest.message}
-            </p>
           )}
         </div>
 

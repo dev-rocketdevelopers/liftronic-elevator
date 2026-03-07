@@ -1,21 +1,23 @@
+import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import ProductPageClient from "./ProductPageClient";
+import ProductDetailContent from "~/components/products/ProductDetailContent";
 import { client } from "~/sanity/lib/client";
+import { sanityFetchOptions } from "~/sanity/lib/fetchOptions";
 import { productBySlugQuery, productSlugsQuery } from "~/sanity/lib/queries";
 import type { ProductFull } from "~/sanity/lib/productTypes";
 
-async function getProductBySlug(slug: string): Promise<ProductFull | null> {
+const getProductBySlug = cache(async (slug: string): Promise<ProductFull | null> => {
   return client.fetch(
     productBySlugQuery,
     { slug },
-    { next: { revalidate: 3600 } }
+    sanityFetchOptions,
   );
-}
+});
 
-async function getAllProductSlugs(): Promise<string[]> {
-  return client.fetch(productSlugsQuery, {}, { next: { revalidate: 3600 } });
-}
+const getAllProductSlugs = cache(async (): Promise<string[]> => {
+  return client.fetch(productSlugsQuery, {}, sanityFetchOptions);
+});
 
 type Props = {
   params: Promise<{
@@ -148,7 +150,7 @@ export default async function ProductDetailPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <ProductPageClient product={product} />
+      <ProductDetailContent product={product} />
     </>
   );
 }
@@ -162,3 +164,4 @@ export async function generateStaticParams() {
 }
 
 export const revalidate = 3600; // 60 minutes
+export const dynamicParams = false;

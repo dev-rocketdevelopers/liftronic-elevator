@@ -1,5 +1,7 @@
 import { groq } from "next-sanity";
+import { cache } from "react";
 import { client } from "~/sanity/lib/client";
+import { sanityFetchOptions } from "~/sanity/lib/fetchOptions";
 import type { PopupModel } from "~/sanity/lib/popupTypes";
 
 const popupsQuery = groq`*[_type == "popup" && isActive == true] | order(order asc, _createdAt asc) {
@@ -23,11 +25,11 @@ const popupsQuery = groq`*[_type == "popup" && isActive == true] | order(order a
   }
 }`;
 
-export async function getPopups(): Promise<PopupModel[]> {
+export const getPopups = cache(async (): Promise<PopupModel[]> => {
   const popups = await client.fetch<PopupModel[]>(
     popupsQuery,
     {},
-    { next: { revalidate: 3600 } },
+    sanityFetchOptions,
   );
   return popups ?? [];
-}
+});

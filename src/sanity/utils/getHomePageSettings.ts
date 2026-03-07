@@ -1,4 +1,6 @@
+import { cache } from "react";
 import { client } from "../lib/client";
+import { sanityFetchOptions } from "../lib/fetchOptions";
 import { homePageSettingsQuery } from "../lib/queries";
 import type { FAQ } from "../lib/homePageTypes";
 import type { PortableTextBlock } from "@portabletext/types";
@@ -19,11 +21,12 @@ export interface HomePageSettings {
   productOptions?: string[];
 }
 
-export async function getHomePageSettings(): Promise<HomePageSettings> {
+export const getHomePageSettings = cache(
+  async (): Promise<HomePageSettings> => {
   const settings = await client.fetch(
     homePageSettingsQuery,
     {},
-    { next: { revalidate: 3600 } } // Cache for 1 hour
+      sanityFetchOptions,
   );
 
   // Default values
@@ -56,4 +59,5 @@ export async function getHomePageSettings(): Promise<HomePageSettings> {
     showSeoContentSection: settings.showSeoContentSection ?? defaults.showSeoContentSection,
     productOptions: settings.productOptions || defaults.productOptions,
   };
-}
+  },
+);

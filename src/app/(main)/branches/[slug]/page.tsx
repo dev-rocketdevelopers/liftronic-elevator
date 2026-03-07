@@ -104,7 +104,6 @@ export default async function BranchPage({ params }: BranchPageProps) {
           bookingSection={branch.bookingSection}
           branchSlug={branch.slug}
           branchName={branch.name}
-          productOptions={homePageSettings.productOptions ?? []}
           bgVariant={bg}
         />
       ),

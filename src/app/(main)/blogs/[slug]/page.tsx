@@ -1,22 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import BlogPostClient from "./BlogPostClient";
+import BlogPostContent from "~/components/blog/BlogPostContent";
 import { client } from "~/sanity/lib/client";
+import { sanityFetchOptions } from "~/sanity/lib/fetchOptions";
 import { postBySlugQuery, postSlugsQuery } from "~/sanity/lib/queries";
 import type { BlogPostFull } from "~/sanity/lib/blogTypes";
 
-async function getPostBySlug(slug: string): Promise<BlogPostFull | null> {
+const getPostBySlug = cache(async (slug: string): Promise<BlogPostFull | null> => {
   return client.fetch(
     postBySlugQuery,
     { slug },
-    { next: { revalidate: 3600 } },
+    sanityFetchOptions,
   );
-}
+});
 
-async function getAllPostSlugs(): Promise<string[]> {
-  return client.fetch(postSlugsQuery, {}, { next: { revalidate: 3600 } });
-}
+const getAllPostSlugs = cache(async (): Promise<string[]> => {
+  return client.fetch(postSlugsQuery, {}, sanityFetchOptions);
+});
 
 // Legacy blog post data - kept for reference, can be removed after content migration
 type Props = {
@@ -102,15 +103,24 @@ export default async function BlogPostPage({ params }: Props) {
   const imageUrl = post.mainImage || `${siteUrl}/assets/service_banner.png`;
   const imageAlt = post.imageAlt || `${post.title} cover image`;
   const tag = post.tag || "Insights";
+  const getBlockText = (block: BlogPostFull["body"][number]) => {
+    if (!("children" in block) || !Array.isArray(block.children)) {
+      return "";
+    }
+
+    return block.children
+      .map((child) => ("text" in child ? child.text || "" : ""))
+      .join(" ");
+  };
 
   // Calculate word count for reading time
   const wordCount = post.body
-    .filter((block: any) => block._type === "block")
-    .map((block: any) =>
-      block.children?.map((child: any) => child.text || "").join(" "),
-    )
+    .filter((block) => block._type === "block")
+    .map(getBlockText)
     .join(" ")
-    .split(/\s+/).length;
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
 
   // Article JSON-LD
   const articleJsonLd = {
@@ -186,7 +196,7 @@ export default async function BlogPostPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <BlogPostClient post={post} />
+      <BlogPostContent post={post} />
     </>
   );
 }
@@ -200,3 +210,4 @@ export async function generateStaticParams() {
 }
 
 export const revalidate = 3600; // 60 minutes
+export const dynamicParams = false;

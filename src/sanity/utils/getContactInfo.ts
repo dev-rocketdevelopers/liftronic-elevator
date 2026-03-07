@@ -1,8 +1,10 @@
 import { groq } from "next-sanity";
+import { cache } from "react";
 import { ContactInfo } from "../../../typings";
 import { client } from "../lib/client";
+import { sanityFetchOptions } from "../lib/fetchOptions";
 
-export async function getContactInfo(): Promise<ContactInfo | null> {
+export const getContactInfo = cache(async (): Promise<ContactInfo | null> => {
   const query = groq`*[_type == "contactInfo"][0]{
     _id,
     supportPhone,
@@ -18,5 +20,5 @@ export async function getContactInfo(): Promise<ContactInfo | null> {
     privacyPolicyUrl,
     termsOfServiceUrl
   }`;
-  return client.fetch<ContactInfo | null>(query);
-}
+  return client.fetch<ContactInfo | null>(query, {}, sanityFetchOptions);
+});

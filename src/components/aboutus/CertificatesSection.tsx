@@ -60,6 +60,7 @@ function CertificateCard({ certificate, onClick }: CertificateCardProps) {
             src={certificate.certificateImage}
             alt={certificate.imageAlt || certificate.title}
             fill
+            sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
           {/* Overlay on hover */}

@@ -129,6 +129,7 @@ export default function MediaPreview({ item, onClose, onNext, onPrevious, hasMul
                   src={urlFor(item.image!).width(1920).height(1080).url()}
                   alt={item.title}
                   fill
+                  sizes="(min-width: 1024px) 80vw, 100vw"
                   className="object-contain"
                 />
               </div>

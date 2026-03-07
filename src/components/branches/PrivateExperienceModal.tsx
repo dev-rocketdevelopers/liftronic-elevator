@@ -10,7 +10,6 @@ interface PrivateExperienceModalProps {
   onClose: () => void;
   branchName: string;
   branchSlug: string;
-  productOptions: string[];
 }
 
 export default function PrivateExperienceModal({
@@ -18,7 +17,6 @@ export default function PrivateExperienceModal({
   onClose,
   branchName,
   branchSlug,
-  productOptions,
 }: PrivateExperienceModalProps) {
   useModal({ isOpen, onClose });
 
@@ -74,7 +72,6 @@ export default function PrivateExperienceModal({
               <PrivateExperienceForm
                 branchName={branchName}
                 branchSlug={branchSlug}
-                productOptions={productOptions}
               />
             </div>
           </motion.div>

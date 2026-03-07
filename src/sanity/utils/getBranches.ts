@@ -1,4 +1,6 @@
+import { cache } from "react";
 import { client } from "../lib/client";
+import { sanityFetchOptions } from "../lib/fetchOptions";
 import type { Branch } from "../lib/branchTypes";
 
 const branchQuery = `*[_type == "branch" && isActive == true] | order(order asc) {
@@ -121,20 +123,16 @@ const singleBranchQuery = `*[_type == "branch" && slug.current == $slug && isAct
   order
 }`;
 
-export async function getBranches(): Promise<Branch[]> {
-  const branches = await client.fetch<Branch[]>(
-    branchQuery,
-    {},
-    { next: { revalidate: 3600 } }, // Cache for 1 hour
-  );
-  return branches;
-}
+export const getBranches = cache(async (): Promise<Branch[]> => {
+  return client.fetch<Branch[]>(branchQuery, {}, sanityFetchOptions);
+});
 
-export async function getBranchBySlug(slug: string): Promise<Branch | null> {
-  const branch = await client.fetch<Branch | null>(
-    singleBranchQuery,
-    { slug },
-    { next: { revalidate: 3600 } }, // Cache for 1 hour
-  );
-  return branch;
-}
+export const getBranchBySlug = cache(
+  async (slug: string): Promise<Branch | null> => {
+    return client.fetch<Branch | null>(
+      singleBranchQuery,
+      { slug },
+      sanityFetchOptions,
+    );
+  },
+);

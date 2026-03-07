@@ -1,5 +1,7 @@
 import { groq } from "next-sanity";
+import { cache } from "react";
 import { client } from "~/sanity/lib/client";
+import { sanityFetchOptions } from "~/sanity/lib/fetchOptions";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
@@ -48,10 +50,9 @@ const homePageSeoQuery = groq`*[_type == "homePageSeo"][0] {
   }
 }`;
 
-export async function getHomePageSeo(): Promise<HomePageSeoData | null> {
-  const data = await client.fetch(homePageSeoQuery, {}, { next: { revalidate: 3600 } });
-  return data;
-}
+export const getHomePageSeo = cache(async (): Promise<HomePageSeoData | null> => {
+  return client.fetch(homePageSeoQuery, {}, sanityFetchOptions);
+});
 
 export function getOgImageUrl(ogImage: HomePageSeoData["ogImage"]): string | null {
   if (!ogImage?.asset) return null;

@@ -1,8 +1,10 @@
 import { groq } from "next-sanity";
+import { cache } from "react";
 import { Post } from "../../../typings";
 import { client } from "../lib/client";
+import { sanityFetchOptions } from "../lib/fetchOptions";
 
-export async function getPosts(): Promise<Post[]> {
+export const getPosts = cache(async (): Promise<Post[]> => {
   const query = groq`*[_type == "post"]{
     _id,
     _createdAt,
@@ -15,10 +17,10 @@ export async function getPosts(): Promise<Post[]> {
     body
   }`;
 
-  return client.fetch<Post[]>(query);
-}
+  return client.fetch<Post[]>(query, {}, sanityFetchOptions);
+});
 
-export async function getPostBySlug(slug: string): Promise<Post | null> {
+export const getPostBySlug = cache(async (slug: string): Promise<Post | null> => {
   const query = groq`*[_type == "post" && slug.current == $slug][0]{
     _id,
     _createdAt,
@@ -31,5 +33,5 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     body
   }`;
 
-  return client.fetch<Post | null>(query, { slug });
-}
+  return client.fetch<Post | null>(query, { slug }, sanityFetchOptions);
+});

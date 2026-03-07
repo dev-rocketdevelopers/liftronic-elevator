@@ -283,13 +283,6 @@ export function generatePrivateExperienceEmail(data: PrivateExperienceFormData):
                   </td>
                 </tr>
 
-                <tr>
-                  <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
-                    <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Product Interest</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${data.productInterest}</p>
-                  </td>
-                </tr>
-
                 ${
                   data.company
                     ? `

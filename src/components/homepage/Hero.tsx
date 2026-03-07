@@ -106,6 +106,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
             alt="Liftronic Elevator Hero"
             fill
             priority
+            sizes="100vw"
             className="object-cover brightness-[0.6]"
           />
         )}

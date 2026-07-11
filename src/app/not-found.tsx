@@ -37,10 +37,11 @@ export default async function NotFound() {
                 experiences we&apos;ve already perfected.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Link href="/" className="btn btn-primary">
+                <Link prefetch={false} href="/" className="btn btn-primary">
                   Back to home
                 </Link>
                 <Link
+                  prefetch={false}
                   href="/#contact"
                   className="btn border-accent/40 bg-white/90 text-charcoal shadow-sm hover:border-accent/60 hover:bg-white"
                 >
@@ -91,6 +92,7 @@ export default async function NotFound() {
                 Explore
               </p>
               <Link
+                prefetch={false}
                 href="/products"
                 className="text-sm font-semibold text-accent hover:text-accent/80"
               >

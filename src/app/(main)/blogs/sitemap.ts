@@ -17,7 +17,7 @@ async function getBlogPostsForSitemap(): Promise<BlogPostSitemap[]> {
       _updatedAt
     }`,
     {},
-    { next: { revalidate: 3600 } } // Revalidate hourly
+    { next: { revalidate: 86400 } }, // Revalidate daily
   );
 }
 

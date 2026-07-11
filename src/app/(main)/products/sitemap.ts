@@ -29,7 +29,7 @@ async function getProductsForSitemap(): Promise<ProductSitemap[]> {
       }
     }`,
     {},
-    { next: { revalidate: 3600 } }
+    { next: { revalidate: 86400 } },
   );
 }
 

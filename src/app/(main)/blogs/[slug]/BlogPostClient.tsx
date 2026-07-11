@@ -92,6 +92,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
               {/* Action Buttons */}
               <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
                 <Link
+                  prefetch={false}
                   href="/#contact"
                   className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
                 >

@@ -26,8 +26,8 @@ import type {
 import type { Certificate } from "~/sanity/lib/certificateTypes";
 import { PortableText } from "@portabletext/react";
 
-// ISR: Revalidate every 60 minutes (3600 seconds)
-export const revalidate = 3600;
+// ISR: Revalidate every 24 hours (24 hours)
+export const revalidate = 86400;
 
 export default async function AboutPage() {
   // Fetch data from Sanity with error handling

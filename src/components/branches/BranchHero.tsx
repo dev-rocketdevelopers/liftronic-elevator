@@ -43,6 +43,7 @@ export default function BranchHero({ branch }: BranchHeroProps) {
           <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-400">
             <li>
               <Link
+                prefetch={false}
                 href="/"
                 className="transition-colors hover:text-charcoal"
               >
@@ -54,6 +55,7 @@ export default function BranchHero({ branch }: BranchHeroProps) {
             </li>
             <li>
               <Link
+                prefetch={false}
                 href="/branches"
                 className="transition-colors hover:text-charcoal"
               >
@@ -63,17 +65,16 @@ export default function BranchHero({ branch }: BranchHeroProps) {
             <li aria-hidden className="text-gray-300">
               /
             </li>
-            <li
-              aria-current="page"
-              className="font-medium text-charcoal"
-            >
+            <li aria-current="page" className="font-medium text-charcoal">
               {branch.city}
             </li>
           </ol>
         </motion.nav>
 
         {/* Main headline block */}
-        <div className={`mt-4 grid grid-cols-1 gap-12 ${!isGoa && branch.contactPerson ? "lg:grid-cols-[1fr_auto] lg:items-stretch" : ""}`}>
+        <div
+          className={`mt-4 grid grid-cols-1 gap-12 ${!isGoa && branch.contactPerson ? "lg:grid-cols-[1fr_auto] lg:items-stretch" : ""}`}
+        >
           <div className="max-w-3xl">
             <motion.div
               initial={{ opacity: 0, y: 16 }}

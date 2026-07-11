@@ -57,8 +57,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// ISR: Revalidate every 60 minutes (3600 seconds)
-export const revalidate = 3600;
+// ISR: Revalidate every 24 hours (24 hours)
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   const slugs = await getServiceSlugs();
@@ -123,18 +123,21 @@ export default async function ServicePage({ params }: Props) {
   };
 
   // FAQPage JSON-LD (if FAQs exist)
-  const faqJsonLd = service.faqs && service.faqs.length > 0 ? {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: service.faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  } : null;
+  const faqJsonLd =
+    service.faqs && service.faqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: service.faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer,
+            },
+          })),
+        }
+      : null;
 
   return (
     <>

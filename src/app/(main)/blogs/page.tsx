@@ -60,19 +60,19 @@ async function getPaginatedPosts(page: number): Promise<BlogPost[]> {
   return client.fetch(
     postsQuery,
     { start, end },
-    { next: { revalidate: 3600 } }
+    { next: { revalidate: 86400 } },
   );
 }
 
 async function getTotalPostsCount(): Promise<number> {
-  return client.fetch(postsCountQuery, {}, { next: { revalidate: 3600 } });
+  return client.fetch(postsCountQuery, {}, { next: { revalidate: 86400 } });
 }
 
 async function getFeaturedPosts(): Promise<BlogPost[]> {
-  return client.fetch(featuredPostsQuery, {}, { next: { revalidate: 3600 } });
+  return client.fetch(featuredPostsQuery, {}, { next: { revalidate: 86400 } });
 }
 
-export const revalidate = 3600; // 3600 minutes
+export const revalidate = 86400; // 24 hours
 export const dynamicParams = true;
 
 export default async function BlogPage({ searchParams }: Props) {
@@ -123,7 +123,7 @@ export default async function BlogPage({ searchParams }: Props) {
               expert team.
             </p>
             <div className="mt-6 flex gap-3">
-              <Link href="/#contact">
+              <Link prefetch={false} href="/#contact">
                 <motion.button
                   className="btn btn-primary px-4 py-2 text-sm md:px-8 md:py-3 md:text-base"
                   whileHover={{ scale: 1.05 }}
@@ -133,7 +133,7 @@ export default async function BlogPage({ searchParams }: Props) {
                   Get Expert Consultation
                 </motion.button>
               </Link>
-              <Link href="/services">
+              <Link prefetch={false} href="/services">
                 <motion.button
                   className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-4 py-2 text-sm md:px-8 md:py-3 md:text-base"
                   whileHover={{ scale: 1.05 }}
@@ -220,6 +220,7 @@ export default async function BlogPage({ searchParams }: Props) {
             <div className="mt-12 flex items-center justify-center gap-2">
               {hasPrevPage && (
                 <Link
+                  prefetch={false}
                   href={
                     currentPage === 2
                       ? "/blogs"
@@ -246,6 +247,7 @@ export default async function BlogPage({ searchParams }: Props) {
 
                   return (
                     <Link
+                      prefetch={false}
                       key={pageNum}
                       href={pageNum === 1 ? "/blogs" : `/blogs?page=${pageNum}`}
                       className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -262,6 +264,7 @@ export default async function BlogPage({ searchParams }: Props) {
 
               {hasNextPage && (
                 <Link
+                  prefetch={false}
                   href={`/blogs?page=${currentPage + 1}`}
                   className="btn border-2 border-gray-200 bg-white text-charcoal hover:bg-gray-50 hover:border-gray-300 px-6 py-2"
                 >

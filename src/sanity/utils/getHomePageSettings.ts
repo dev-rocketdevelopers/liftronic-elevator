@@ -23,7 +23,7 @@ export async function getHomePageSettings(): Promise<HomePageSettings> {
   const settings = await client.fetch(
     homePageSettingsQuery,
     {},
-    { next: { revalidate: 3600 } } // Cache for 1 hour
+    { next: { revalidate: 86400 } }, // Cache for 24 hours
   );
 
   // Default values
@@ -52,8 +52,10 @@ export async function getHomePageSettings(): Promise<HomePageSettings> {
   return {
     featuredFaqs: settings.featuredFaqs || defaults.featuredFaqs,
     showFaqSection: settings.showFaqSection ?? defaults.showFaqSection,
-    seoContentSections: settings.seoContentSections || defaults.seoContentSections,
-    showSeoContentSection: settings.showSeoContentSection ?? defaults.showSeoContentSection,
+    seoContentSections:
+      settings.seoContentSections || defaults.seoContentSections,
+    showSeoContentSection:
+      settings.showSeoContentSection ?? defaults.showSeoContentSection,
     productOptions: settings.productOptions || defaults.productOptions,
   };
 }

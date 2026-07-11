@@ -39,6 +39,7 @@ export default function BranchSiltzProducts({
             </p>
           </div>
           <Link
+            prefetch={false}
             href="/products/stiltz-homelifts"
             className="inline-flex items-center gap-2 text-sm font-semibold text-brand transition-colors hover:text-charcoal sm:mb-1"
           >
@@ -61,6 +62,7 @@ export default function BranchSiltzProducts({
                 Entire card links to the product detail page.
               */}
               <Link
+                prefetch={false}
                 href={`/products/${product.slug}`}
                 className="group block overflow-hidden rounded-3xl border border-black/10 bg-white shadow-[0_12px_34px_rgba(17,24,39,0.07)] transition-all duration-300 hover:-translate-y-1 hover:border-brand/35 hover:shadow-[0_18px_42px_rgba(17,24,39,0.12)]"
               >

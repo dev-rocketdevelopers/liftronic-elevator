@@ -4,13 +4,11 @@ import { motion, AnimatePresence } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FiVolume2, FiVolumeX } from "react-icons/fi";
 import { HiXMark } from "react-icons/hi2";
-import type { TeaserPopup } from "~/sanity/lib/teaserPopupTypes";
+import type { TeaserPopupConfig } from "~/sanity/lib/popupTypes";
 import { useModal } from "~/hooks/useModal";
 
-type TeaserPopupData = Pick<TeaserPopup, "title" | "description" | "videoUrl">;
-
 interface TeaserPopupModalProps {
-  popup: TeaserPopupData;
+  popup: TeaserPopupConfig;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -233,7 +231,9 @@ export default function TeaserPopupModal({
                     });
                     setShowTapHint(false);
                   }}
-                  aria-label={isSoundEnabled ? "Mute video audio" : "Play video audio"}
+                  aria-label={
+                    isSoundEnabled ? "Mute video audio" : "Play video audio"
+                  }
                   aria-pressed={isSoundEnabled}
                   className={`pointer-events-auto inline-flex items-center rounded-full bg-black/65 p-1.5 text-white shadow-lg ring-1 ring-white/15 backdrop-blur-md transition-all duration-200 hover:bg-black/75 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-black ${
                     !isSoundEnabled && showTapHint ? "gap-2 pr-3" : ""
@@ -259,7 +259,11 @@ export default function TeaserPopupModal({
                       <motion.span
                         initial={{ opacity: 0, x: -6 }}
                         animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -10, transition: { duration: 0.18 } }}
+                        exit={{
+                          opacity: 0,
+                          x: -10,
+                          transition: { duration: 0.18 },
+                        }}
                         className="pr-1 text-sm font-medium tracking-[0.01em] text-white/92"
                       >
                         Tap to play audio

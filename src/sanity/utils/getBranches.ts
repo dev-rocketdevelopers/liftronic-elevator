@@ -125,7 +125,7 @@ export async function getBranches(): Promise<Branch[]> {
   const branches = await client.fetch<Branch[]>(
     branchQuery,
     {},
-    { next: { revalidate: 3600 } }, // Cache for 1 hour
+    { next: { revalidate: 86400 } }, // Cache for 24 hours
   );
   return branches;
 }
@@ -134,7 +134,7 @@ export async function getBranchBySlug(slug: string): Promise<Branch | null> {
   const branch = await client.fetch<Branch | null>(
     singleBranchQuery,
     { slug },
-    { next: { revalidate: 3600 } }, // Cache for 1 hour
+    { next: { revalidate: 86400 } }, // Cache for 24 hours
   );
   return branch;
 }

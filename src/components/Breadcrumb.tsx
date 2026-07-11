@@ -42,6 +42,7 @@ export default function Breadcrumb({ title, items }: BreadcrumbProps) {
               itemType="https://schema.org/ListItem"
             >
               <Link
+                prefetch={false}
                 itemProp="item"
                 href="/"
                 className="flex items-center gap-1.5 text-gray-600 transition-colors hover:text-accent"
@@ -67,6 +68,7 @@ export default function Breadcrumb({ title, items }: BreadcrumbProps) {
                 {item.href && !item.isCurrentPage ? (
                   <>
                     <Link
+                      prefetch={false}
                       itemProp="item"
                       href={item.href}
                       className="font-medium text-gray-600 transition-colors hover:text-accent"

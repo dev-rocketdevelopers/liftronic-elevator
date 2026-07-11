@@ -37,6 +37,7 @@ export default function BranchesClient({ branches }: BranchesClientProps) {
           className={isSingle ? "w-full" : ""}
         >
           <Link
+            prefetch={false}
             href={`/branches/${branch.slug}`}
             className="group block h-full overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_12px_34px_rgba(17,24,39,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-brand/35 hover:shadow-[0_18px_42px_rgba(17,24,39,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
           >

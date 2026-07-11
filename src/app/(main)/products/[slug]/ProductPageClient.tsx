@@ -36,7 +36,7 @@ export default function ProductPageClient({
 }: ProductPageClientProps) {
   const router = useRouter();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
-    null
+    null,
   );
 
   // Prefetch the products page immediately when this page loads
@@ -62,7 +62,7 @@ export default function ProductPageClient({
   const handlePrevious = () => {
     if (selectedImageIndex === null || galleryImages.length <= 1) return;
     setSelectedImageIndex(
-      (selectedImageIndex - 1 + galleryImages.length) % galleryImages.length
+      (selectedImageIndex - 1 + galleryImages.length) % galleryImages.length,
     );
   };
 
@@ -128,7 +128,7 @@ export default function ProductPageClient({
 
               {/* Action Buttons */}
               <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-                <Link href="/#contact">
+                <Link prefetch={false} href="/#contact">
                   <motion.button
                     className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
@@ -138,7 +138,7 @@ export default function ProductPageClient({
                     Get a Quote
                   </motion.button>
                 </Link>
-                <Link href="/services">
+                <Link prefetch={false} href="/services">
                   <motion.button
                     className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 backdrop-blur-sm transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
@@ -374,6 +374,7 @@ export default function ProductPageClient({
                   {product.locationPages.map((location, index) => (
                     <span key={location.citySlug}>
                       <Link
+                        prefetch={false}
                         href={`/products/${product.slug}/${location.citySlug}`}
                         className="hover:text-accent transition-colors duration-200 underline"
                       >

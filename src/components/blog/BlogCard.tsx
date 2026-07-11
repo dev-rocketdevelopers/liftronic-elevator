@@ -36,7 +36,11 @@ export default function BlogCard({
   const finalImageAlt = imageAlt || `${title} - Blog post cover image`;
 
   return (
-    <Link href={blogHref} aria-label={`Read article: ${title}`}>
+    <Link
+      prefetch={false}
+      href={blogHref}
+      aria-label={`Read article: ${title}`}
+    >
       <article
         itemScope
         itemType="https://schema.org/BlogPosting"

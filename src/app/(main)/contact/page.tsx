@@ -4,7 +4,7 @@ import { getSiteUrl } from "~/lib/site-url";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
 import { getHomePageSettings } from "~/sanity/utils/getHomePageSettings";
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Contact Us For Elevator Manufacturer | Liftronic Elevator",

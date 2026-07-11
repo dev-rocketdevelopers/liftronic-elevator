@@ -41,6 +41,7 @@ export default function QuoteCTA({
       {/* CTA Button */}
       <div className="flex-shrink-0 w-full md:w-auto">
         <Link
+          prefetch={false}
           href={ctaHref}
           className="inline-flex items-center justify-center w-full md:w-auto rounded-lg bg-accent px-4 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-medium text-black transition-all hover:bg-accent/90 hover:shadow-lg hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 shadow-sm"
           onClick={onClick}

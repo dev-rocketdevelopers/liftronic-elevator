@@ -7,11 +7,13 @@ import type { ProductRange } from "../lib/productRangeTypes";
  * @param isFeaturedFilter Optional filter parameter to narrow results (e.g. true)
  * @returns Promise<ProductRange[]> Array of product ranges
  */
-export async function getProductRanges(isFeaturedFilter?: boolean): Promise<ProductRange[]> {
+export async function getProductRanges(
+  isFeaturedFilter?: boolean,
+): Promise<ProductRange[]> {
   let ranges = await client.fetch<ProductRange[]>(
     productRangesQuery,
     {},
-    { next: { revalidate: 3600 } } // Revalidate every hour
+    { next: { revalidate: 86400 } }, // Revalidate daily
   );
 
   // Apply filter if specified
@@ -20,7 +22,7 @@ export async function getProductRanges(isFeaturedFilter?: boolean): Promise<Prod
       .map((range) => {
         // Keep only featured products within the range
         const featuredProducts = range.products.filter(
-          (product) => product.featured === true
+          (product) => product.featured === true,
         );
         return {
           ...range,

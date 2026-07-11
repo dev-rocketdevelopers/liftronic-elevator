@@ -198,6 +198,7 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between h-16 md:h-18 px-4 md:px-5">
           <Link
+            prefetch={false}
             href="/"
             onClick={(e) =>
               handleLogoClick(e as unknown as MouseEvent<HTMLAnchorElement>)
@@ -233,6 +234,7 @@ export default function Navbar() {
 
               return (
                 <Link
+                  prefetch={false}
                   key={l.href}
                   href={l.href}
                   onClick={(e) => handleLinkClick(e, l.href)}
@@ -314,6 +316,7 @@ export default function Navbar() {
                         const href = `/branches/${branch.slug}`;
                         return (
                           <Link
+                            prefetch={false}
                             key={branch.slug}
                             href={href}
                             role="menuitem"
@@ -402,6 +405,7 @@ export default function Navbar() {
 
                     return (
                       <Link
+                        prefetch={false}
                         key={l.href}
                         href={l.href}
                         onClick={(e) => handleLinkClick(e, l.href)}
@@ -441,6 +445,7 @@ export default function Navbar() {
                       const href = `/branches/${branch.slug}`;
                       return (
                         <Link
+                          prefetch={false}
                           key={branch.slug}
                           href={href}
                           onClick={() => {

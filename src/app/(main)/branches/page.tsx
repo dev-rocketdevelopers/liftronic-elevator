@@ -38,7 +38,11 @@ export default async function BranchesPage() {
           <nav aria-label="Breadcrumb">
             <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-400">
               <li>
-                <Link href="/" className="transition-colors hover:text-charcoal">
+                <Link
+                  prefetch={false}
+                  href="/"
+                  className="transition-colors hover:text-charcoal"
+                >
                   Home
                 </Link>
               </li>

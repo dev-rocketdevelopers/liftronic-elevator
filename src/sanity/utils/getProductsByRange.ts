@@ -8,11 +8,11 @@ import type { ProductRangeFull } from "../lib/productRangeTypes";
  * @returns Promise<ProductRangeFull | null> Product range with products or null if not found
  */
 export async function getProductRangeBySlug(
-  slug: string
+  slug: string,
 ): Promise<ProductRangeFull | null> {
   return client.fetch<ProductRangeFull | null>(
     productRangeBySlugQuery,
     { slug },
-    { next: { revalidate: 3600 } } // Revalidate every hour
+    { next: { revalidate: 86400 } }, // Revalidate daily
   );
 }

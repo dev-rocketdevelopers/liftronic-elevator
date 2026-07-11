@@ -36,7 +36,11 @@ export default function ProductCard({
   const finalImageAlt = imageAlt || `${title} - Elevator product image`;
 
   return (
-    <Link href={productHref} aria-label={`Learn more about ${title}`}>
+    <Link
+      prefetch={false}
+      href={productHref}
+      aria-label={`Learn more about ${title}`}
+    >
       <article
         itemScope
         itemType="https://schema.org/Product"

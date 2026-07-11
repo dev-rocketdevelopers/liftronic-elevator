@@ -24,7 +24,7 @@ interface ProductWithLocation extends ProductFull {
 
 async function getProductWithLocation(
   productSlug: string,
-  citySlug: string
+  citySlug: string,
 ): Promise<ProductWithLocation | null> {
   const query = groq`*[_type == "product" && slug.current == $productSlug][0] {
     _id,
@@ -72,7 +72,7 @@ async function getProductWithLocation(
   const product = await client.fetch(
     query,
     { productSlug, citySlug },
-    { next: { revalidate: 3600 } }
+    { next: { revalidate: 86400 } },
   );
 
   if (!product || !product.locationPage || !product.locationPage.published) {
@@ -93,7 +93,7 @@ async function getAllLocationProductParams() {
   const products = await client.fetch(
     query,
     {},
-    { next: { revalidate: 3600 } }
+    { next: { revalidate: 86400 } },
   );
 
   const params: { slug: string; city: string }[] = [];
@@ -274,4 +274,4 @@ export async function generateStaticParams() {
   return await getAllLocationProductParams();
 }
 
-export const revalidate = 3600; // 60 minutes
+export const revalidate = 86400; // 24 hours

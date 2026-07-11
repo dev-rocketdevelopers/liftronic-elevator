@@ -34,7 +34,7 @@ const renderAction = (action: CTAAction) => {
         whileTap={{ scale: 0.98 }}
         className="w-full sm:w-auto"
       >
-        <Link href={href} className={className}>
+        <Link prefetch={false} href={href} className={className}>
           {label}
         </Link>
       </motion.div>

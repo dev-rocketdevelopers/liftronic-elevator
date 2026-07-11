@@ -41,7 +41,11 @@ export default function ServiceCard({
   const finalImageAlt = imageAlt || `${title} - Service offering image`;
 
   return (
-    <Link href={serviceHref} aria-label={`Learn more about ${title}`}>
+    <Link
+      prefetch={false}
+      href={serviceHref}
+      aria-label={`Learn more about ${title}`}
+    >
       <article
         itemScope
         itemType="https://schema.org/Service"

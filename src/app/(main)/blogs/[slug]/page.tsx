@@ -11,12 +11,12 @@ async function getPostBySlug(slug: string): Promise<BlogPostFull | null> {
   return client.fetch(
     postBySlugQuery,
     { slug },
-    { next: { revalidate: 3600 } },
+    { next: { revalidate: 86400 } },
   );
 }
 
 async function getAllPostSlugs(): Promise<string[]> {
-  return client.fetch(postSlugsQuery, {}, { next: { revalidate: 3600 } });
+  return client.fetch(postSlugsQuery, {}, { next: { revalidate: 86400 } });
 }
 
 // Legacy blog post data - kept for reference, can be removed after content migration
@@ -200,4 +200,4 @@ export async function generateStaticParams() {
   }));
 }
 
-export const revalidate = 3600; // 60 minutes
+export const revalidate = 86400; // 24 hours

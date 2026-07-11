@@ -29,10 +29,10 @@ export const metadata: Metadata = {
 };
 
 async function getAllMedia(): Promise<MediaItem[]> {
-  return client.fetch(mediaQuery, {}, { next: { revalidate: 3600 } });
+  return client.fetch(mediaQuery, {}, { next: { revalidate: 86400 } });
 }
 
-export const revalidate = 3600; // 3600 seconds
+export const revalidate = 86400; // 24 hours
 
 export default async function MediaPage() {
   const mediaItems = await getAllMedia();

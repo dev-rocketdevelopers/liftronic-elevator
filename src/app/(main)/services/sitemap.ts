@@ -19,7 +19,7 @@ async function getServicesForSitemap(): Promise<ServiceSitemap[]> {
       changeFrequency
     }`,
     {},
-    { next: { revalidate: 3600 } }
+    { next: { revalidate: 86400 } },
   );
 }
 
@@ -30,7 +30,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const serviceUrls: MetadataRoute.Sitemap = services.map((service) => ({
     url: `${siteUrl}/services/${service.slug}`,
     lastModified: service._updatedAt || new Date().toISOString(),
-    changeFrequency: (service.changeFrequency as "daily" | "weekly" | "monthly" | "yearly") || "monthly",
+    changeFrequency:
+      (service.changeFrequency as "daily" | "weekly" | "monthly" | "yearly") ||
+      "monthly",
     priority: service.sitemapPriority || 0.8,
   }));
 

@@ -10,12 +10,12 @@ async function getProductBySlug(slug: string): Promise<ProductFull | null> {
   return client.fetch(
     productBySlugQuery,
     { slug },
-    { next: { revalidate: 3600 } }
+    { next: { revalidate: 86400 } },
   );
 }
 
 async function getAllProductSlugs(): Promise<string[]> {
-  return client.fetch(productSlugsQuery, {}, { next: { revalidate: 3600 } });
+  return client.fetch(productSlugsQuery, {}, { next: { revalidate: 86400 } });
 }
 
 type Props = {
@@ -162,4 +162,4 @@ export async function generateStaticParams() {
   }));
 }
 
-export const revalidate = 3600; // 60 minutes
+export const revalidate = 86400; // 24 hours

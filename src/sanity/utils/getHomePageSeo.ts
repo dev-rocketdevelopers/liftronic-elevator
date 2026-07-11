@@ -49,11 +49,17 @@ const homePageSeoQuery = groq`*[_type == "homePageSeo"][0] {
 }`;
 
 export async function getHomePageSeo(): Promise<HomePageSeoData | null> {
-  const data = await client.fetch(homePageSeoQuery, {}, { next: { revalidate: 3600 } });
+  const data = await client.fetch(
+    homePageSeoQuery,
+    {},
+    { next: { revalidate: 86400 } },
+  );
   return data;
 }
 
-export function getOgImageUrl(ogImage: HomePageSeoData["ogImage"]): string | null {
+export function getOgImageUrl(
+  ogImage: HomePageSeoData["ogImage"],
+): string | null {
   if (!ogImage?.asset) return null;
   return urlFor(ogImage).width(1200).height(630).url();
 }

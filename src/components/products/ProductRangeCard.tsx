@@ -33,7 +33,11 @@ export default function ProductRangeCard({
   const finalImageAlt = imageAlt || `${title} - Product range image`;
 
   return (
-    <Link href={rangeHref} aria-label={`Explore ${title} products`}>
+    <Link
+      prefetch={false}
+      href={rangeHref}
+      aria-label={`Explore ${title} products`}
+    >
       <article
         itemScope
         itemType="https://schema.org/ProductCollection"

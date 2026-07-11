@@ -15,7 +15,7 @@ async function getAllSitemapLinks() {
         "slug": slug.current
       }`,
       {},
-      { next: { revalidate: 86400 } } // 24 hour cache
+      { next: { revalidate: 86400 } }, // 24 hour cache
     ),
     client.fetch<SitemapItem[]>(
       groq`*[_type == "service" && defined(slug.current)] | order(title asc) {
@@ -23,7 +23,7 @@ async function getAllSitemapLinks() {
         "slug": slug.current
       }`,
       {},
-      { next: { revalidate: 86400 } }
+      { next: { revalidate: 86400 } },
     ),
     client.fetch<SitemapItem[]>(
       groq`*[_type == "post" && defined(slug.current)] | order(_createdAt desc)[0...10] {
@@ -31,7 +31,7 @@ async function getAllSitemapLinks() {
         "slug": slug.current
       }`,
       {},
-      { next: { revalidate: 86400 } }
+      { next: { revalidate: 86400 } },
     ),
   ]);
 
@@ -67,6 +67,7 @@ export default async function FooterSitemapLinks() {
               {links.main.map((link) => (
                 <li key={link.slug}>
                   <Link
+                    prefetch={false}
                     href={link.slug}
                     className="text-gray-700 hover:text-accent transition-colors text-xs"
                   >
@@ -87,6 +88,7 @@ export default async function FooterSitemapLinks() {
                 links.productRanges.map((link) => (
                   <li key={link.slug}>
                     <Link
+                      prefetch={false}
                       href={`/products#${link.slug}`}
                       className="text-gray-700 hover:text-accent transition-colors text-xs"
                     >
@@ -95,7 +97,9 @@ export default async function FooterSitemapLinks() {
                   </li>
                 ))
               ) : (
-                <li className="text-gray-500 text-xs">No product ranges available</li>
+                <li className="text-gray-500 text-xs">
+                  No product ranges available
+                </li>
               )}
             </ul>
           </div>
@@ -110,6 +114,7 @@ export default async function FooterSitemapLinks() {
                 links.services.map((link) => (
                   <li key={link.slug}>
                     <Link
+                      prefetch={false}
                       href={`/services/${link.slug}`}
                       className="text-gray-700 hover:text-accent transition-colors text-xs"
                     >
@@ -133,6 +138,7 @@ export default async function FooterSitemapLinks() {
                 links.blogs.map((link) => (
                   <li key={link.slug}>
                     <Link
+                      prefetch={false}
                       href={`/blogs/${link.slug}`}
                       className="text-gray-700 hover:text-accent transition-colors text-xs"
                     >

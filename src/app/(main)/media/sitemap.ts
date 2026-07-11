@@ -17,7 +17,7 @@ async function getMediaForSitemap(): Promise<MediaSitemap[]> {
       _updatedAt
     }`,
     {},
-    { next: { revalidate: 3600 } } // Revalidate hourly
+    { next: { revalidate: 86400 } }, // Revalidate daily
   );
 }
 

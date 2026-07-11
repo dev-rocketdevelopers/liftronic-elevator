@@ -41,7 +41,11 @@ export default function FeaturedBlogCard({
   const finalImageAlt = imageAlt || `${title} - Blog post cover image`;
 
   return (
-    <Link href={blogHref} aria-label={`Read article: ${title}`}>
+    <Link
+      prefetch={false}
+      href={blogHref}
+      aria-label={`Read article: ${title}`}
+    >
       <article
         itemScope
         itemType="https://schema.org/BlogPosting"
@@ -85,7 +89,7 @@ export default function FeaturedBlogCard({
               >
                 {date}
               </time>
-              
+
               {readTime && (
                 <>
                   <span className="flex-shrink-0">•</span>
@@ -94,7 +98,7 @@ export default function FeaturedBlogCard({
                   </span>
                 </>
               )}
-              
+
               {author && (
                 <>
                   <span className="flex-shrink-0">•</span>

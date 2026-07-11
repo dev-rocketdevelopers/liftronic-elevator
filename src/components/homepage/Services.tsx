@@ -129,7 +129,7 @@ export default function Services({ services: servicesProp }: ServicesProps) {
 
   const visibleDesktop = Array.from(
     { length: Math.min(DESKTOP_VISIBLE, services.length) },
-    (_, offset) => services[(activeIndex + offset) % services.length]
+    (_, offset) => services[(activeIndex + offset) % services.length],
   );
 
   const currentService = services[activeIndex];
@@ -177,7 +177,11 @@ export default function Services({ services: servicesProp }: ServicesProps) {
               onDragEnd={handleDragEnd}
               className="touch-pan-y"
             >
-              <Link href={`/services/${currentService.slug}`} className="block">
+              <Link
+                prefetch={false}
+                href={`/services/${currentService.slug}`}
+                className="block"
+              >
                 <article className="group relative flex min-h-[420px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/15 p-8 shadow-xl shadow-black/15 backdrop-blur-xl cursor-pointer">
                   <ImageBackdrop
                     alt={currentService.title}
@@ -201,6 +205,7 @@ export default function Services({ services: servicesProp }: ServicesProps) {
           <AnimatePresence initial={false} mode="popLayout">
             {visibleDesktop.map((service, offset) => (
               <Link
+                prefetch={false}
                 href={`/services/${service.slug}`}
                 key={`${service.title}-${
                   (activeIndex + offset) % services.length

@@ -28,7 +28,11 @@ export default function ProductMiniCard({
   const finalImageAlt = imageAlt || `${title} - Product image`;
 
   return (
-    <Link href={`/products/${slug}`} className="block h-full group">
+    <Link
+      prefetch={false}
+      href={`/products/${slug}`}
+      className="block h-full group"
+    >
       <motion.article
         className="relative h-full flex flex-col overflow-hidden rounded-xl bg-white border border-gray-200 transition-all duration-300 hover:border-gray-200"
         whileHover={{ y: -3 }}

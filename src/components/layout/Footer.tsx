@@ -46,7 +46,11 @@ export default async function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-10 lg:gap-12 mb-8 md:mb-8">
           {/* Company Info - Takes more space */}
           <div className="space-y-4 md:space-y-6 lg:col-span-4 md:col-span-2 text-center md:text-left flex flex-col items-center md:items-start">
-            <Link href="/" className="inline-flex items-center gap-3 group">
+            <Link
+              prefetch={false}
+              href="/"
+              className="inline-flex items-center gap-3 group"
+            >
               <div className="relative">
                 <div className="absolute inset-0 bg-accent/20 rounded-xl blur-md group-hover:blur-lg transition-all" />
                 <Image
@@ -83,6 +87,7 @@ export default async function Footer() {
               </h3>
               <nav className="flex flex-col gap-3 md:gap-3.5 items-start">
                 <Link
+                  prefetch={false}
                   href="/products"
                   className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
                 >
@@ -90,6 +95,7 @@ export default async function Footer() {
                   <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
                 </Link>
                 <Link
+                  prefetch={false}
                   href="/services"
                   className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
                 >
@@ -97,6 +103,7 @@ export default async function Footer() {
                   <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
                 </Link>
                 <Link
+                  prefetch={false}
                   href="/aboutus"
                   className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
                 >
@@ -104,6 +111,7 @@ export default async function Footer() {
                   <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
                 </Link>
                 <Link
+                  prefetch={false}
                   href="/blogs"
                   className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
                 >
@@ -111,6 +119,7 @@ export default async function Footer() {
                   <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
                 </Link>
                 <Link
+                  prefetch={false}
                   href="/media"
                   className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
                 >
@@ -118,6 +127,7 @@ export default async function Footer() {
                   <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
                 </Link>
                 <Link
+                  prefetch={false}
                   href="/contact"
                   className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
                 >
@@ -231,6 +241,7 @@ export default async function Footer() {
             {/* Additional Links */}
             <div className="mt-6 md:mt-8 space-y-3 w-full flex justify-center md:justify-start">
               <Link
+                prefetch={false}
                 href="/contact"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent/90 text-charcoal font-semibold text-sm rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-accent/30 hover:scale-105 group"
               >
@@ -287,6 +298,7 @@ export default async function Footer() {
                 </a>
               ) : (
                 <Link
+                  prefetch={false}
                   href="/privacy-policy"
                   className="hover:text-accent transition-colors duration-300 relative group"
                 >
@@ -307,6 +319,7 @@ export default async function Footer() {
                 </a>
               ) : (
                 <Link
+                  prefetch={false}
                   href="/terms"
                   className="hover:text-accent transition-colors duration-300 relative group"
                 >

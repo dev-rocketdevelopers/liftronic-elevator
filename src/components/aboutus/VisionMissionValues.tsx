@@ -1,10 +1,12 @@
 import { getIcon } from "~/sanity/utils/iconMapper";
 import type { VisionMissionValues as VMVType } from "~/sanity/lib/aboutTypes";
 
+const FALLBACK_CREATED_AT = "1970-01-01T00:00:00.000Z";
+
 // Fallback data
 const fallbackVMV: VMVType = {
   _id: "fallback-vmv",
-  _createdAt: new Date().toISOString(),
+  _createdAt: FALLBACK_CREATED_AT,
   visionTitle: "Our Vision",
   visionDescription:
     "To be the global leader in vertical transportation solutions, setting new standards for safety, innovation, and customer satisfaction. We envision a world where every building is equipped with intelligent, sustainable, and reliable elevator systems that enhance the quality of life for all users.",
@@ -197,7 +199,6 @@ export default function VisionMissionValues({
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { client } from "../lib/client";
 import type { Branch } from "../lib/branchTypes";
 
@@ -121,14 +122,14 @@ const singleBranchQuery = `*[_type == "branch" && slug.current == $slug && isAct
   order
 }`;
 
-export async function getBranches(): Promise<Branch[]> {
+export const getBranches = cache(async (): Promise<Branch[]> => {
   const branches = await client.fetch<Branch[]>(
     branchQuery,
     {},
     { next: { revalidate: 86400 } }, // Cache for 24 hours
   );
   return branches;
-}
+});
 
 export async function getBranchBySlug(slug: string): Promise<Branch | null> {
   const branch = await client.fetch<Branch | null>(

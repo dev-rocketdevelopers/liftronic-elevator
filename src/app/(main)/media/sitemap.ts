@@ -6,7 +6,7 @@ import { getSiteUrl } from "~/lib/site-url";
 type MediaSitemap = {
   slug: string;
   publishedAt: string;
-  _updatedAt?: string;
+  _updatedAt: string;
 };
 
 async function getMediaForSitemap(): Promise<MediaSitemap[]> {
@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const mediaUrls: MetadataRoute.Sitemap = mediaItems.map((item) => ({
     url: `${siteUrl}/media#${item.slug}`,
-    lastModified: item._updatedAt || item.publishedAt,
+    lastModified: item._updatedAt,
     changeFrequency: "monthly" as const,
     priority: 0.5,
   }));
@@ -36,7 +36,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const mediaListPage: MetadataRoute.Sitemap = [
     {
       url: `${siteUrl}/media`,
-      lastModified: new Date().toISOString(),
       changeFrequency: "weekly" as const,
       priority: 0.7,
     },

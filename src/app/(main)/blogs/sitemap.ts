@@ -6,7 +6,7 @@ import { getSiteUrl } from "~/lib/site-url";
 type BlogPostSitemap = {
   slug: string;
   publishedAt: string;
-  _updatedAt?: string;
+  _updatedAt: string;
 };
 
 async function getBlogPostsForSitemap(): Promise<BlogPostSitemap[]> {
@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const blogPostUrls: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${siteUrl}/blogs/${post.slug}`,
-    lastModified: post._updatedAt || post.publishedAt,
+    lastModified: post._updatedAt,
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }));
@@ -36,7 +36,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogListPage: MetadataRoute.Sitemap = [
     {
       url: `${siteUrl}/blogs`,
-      lastModified: new Date().toISOString(),
       changeFrequency: "daily" as const,
       priority: 0.8,
     },

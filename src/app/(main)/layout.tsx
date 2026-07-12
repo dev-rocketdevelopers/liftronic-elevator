@@ -57,7 +57,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
             <Navbar />
           </Suspense>
           <main id="main-content">{children}</main>
-          <Footer />
+          <Footer contactInfo={contactInfo} branches={branches} />
           <WhatsAppButton
             whatsappNumber={contactInfo?.whatsappNumber}
             whatsappMessage={contactInfo?.whatsappMessage}

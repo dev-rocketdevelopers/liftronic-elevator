@@ -1,11 +1,13 @@
 import { getIcon } from "~/sanity/utils/iconMapper";
 import type { WhyChooseUs } from "~/sanity/lib/aboutTypes";
 
+const FALLBACK_CREATED_AT = "1970-01-01T00:00:00.000Z";
+
 // Fallback data
 const fallbackReasons: WhyChooseUs[] = [
   {
     _id: "fallback-1",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     title: "Proven Expertise",
     description:
       "With over 15 years in the industry, we've mastered every aspect of elevator systems. Our extensive experience ensures reliable, safe, and efficient solutions for all your vertical transportation needs.",
@@ -21,7 +23,7 @@ const fallbackReasons: WhyChooseUs[] = [
   },
   {
     _id: "fallback-2",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     title: "Uncompromising Quality",
     description:
       "We use only premium materials and cutting-edge technology in all our installations and services. Our commitment to quality means your elevators will perform reliably for decades to come.",
@@ -37,7 +39,7 @@ const fallbackReasons: WhyChooseUs[] = [
   },
   {
     _id: "fallback-3",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     title: "24/7 Support",
     description:
       "Our round-the-clock emergency service ensures you're never left stranded. With rapid response times and expert technicians, we keep your elevators running smoothly day and night.",
@@ -53,7 +55,7 @@ const fallbackReasons: WhyChooseUs[] = [
   },
   {
     _id: "fallback-4",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     title: "Cutting-Edge Technology",
     description:
       "Stay ahead with our smart elevator solutions featuring IoT integration, predictive maintenance, and energy-efficient systems that reduce costs while improving performance.",
@@ -69,7 +71,7 @@ const fallbackReasons: WhyChooseUs[] = [
   },
   {
     _id: "fallback-5",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     title: "Trusted Reliability",
     description:
       "Our maintenance programs and quality installations ensure maximum uptime for your elevators. We build lasting relationships through dependable service and consistent performance.",
@@ -85,7 +87,7 @@ const fallbackReasons: WhyChooseUs[] = [
   },
   {
     _id: "fallback-6",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     title: "Comprehensive Coverage",
     description:
       "From residential buildings to commercial complexes, we handle projects of all sizes. Our comprehensive services cover installation, maintenance, modernization, and emergency repairs.",
@@ -162,7 +164,6 @@ export default function WhyUsSection({ reasons }: WhyUsSectionProps) {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

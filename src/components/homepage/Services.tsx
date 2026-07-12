@@ -20,6 +20,8 @@ type ServicesProps = {
   services?: ServiceOffered[];
 };
 
+const FALLBACK_CREATED_AT = "1970-01-01T00:00:00.000Z";
+
 // Icon mapping function
 const getServiceIcon = (iconName?: string): ReactElement => {
   const iconMap: Record<string, ReactElement> = {
@@ -43,7 +45,7 @@ const getServiceIcon = (iconName?: string): ReactElement => {
 const fallbackServices: ServiceOffered[] = [
   {
     _id: "fallback-1",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     title: "Design Strategy",
     slug: "design-strategy",
     summary:
@@ -59,7 +61,7 @@ const fallbackServices: ServiceOffered[] = [
   },
   {
     _id: "fallback-2",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     title: "Supply (Domestic / Exports)",
     slug: "supply-domestic-exports",
     summary:
@@ -70,7 +72,7 @@ const fallbackServices: ServiceOffered[] = [
   },
   {
     _id: "fallback-3",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     title: "Installation & Maintenance",
     slug: "installation-maintenance",
     summary:
@@ -86,7 +88,7 @@ const fallbackServices: ServiceOffered[] = [
   },
   {
     _id: "fallback-4",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     title: "Replacement Excellence",
     slug: "replacement-excellence",
     summary:

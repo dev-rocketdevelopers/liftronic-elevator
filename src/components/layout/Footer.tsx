@@ -1,19 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getContactInfo } from "~/sanity/utils/getContactInfo";
 import { getSocial } from "~/sanity/utils/getSocials";
 import { getCompanyInfo } from "~/sanity/utils/getAboutUs";
-import { getBranches } from "~/sanity/utils/getBranches";
 import { getIcon } from "~/sanity/utils/iconMapper";
 import { FiMail, FiPhone } from "react-icons/fi";
 import FooterAddressBlock from "~/components/layout/FooterAddressBlock";
+import type { ContactInfo } from "~/../typings";
+import type { Branch } from "~/sanity/lib/branchTypes";
 
-export default async function Footer() {
-  const [contactInfo, socials, companyInfo, branches] = await Promise.all([
-    getContactInfo(),
+interface FooterProps {
+  contactInfo: ContactInfo | null;
+  branches: Branch[];
+}
+
+export default async function Footer({ contactInfo, branches }: FooterProps) {
+  const [socials, companyInfo] = await Promise.all([
     getSocial(),
     getCompanyInfo(),
-    getBranches(),
   ]);
 
   // Build a lightweight list for the footer address block

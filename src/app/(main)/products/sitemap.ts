@@ -5,7 +5,7 @@ import { getSiteUrl } from "~/lib/site-url";
 
 type ProductSitemap = {
   productSlug: string;
-  _updatedAt?: string;
+  _updatedAt: string;
   mainImage?: string;
   gallery?: string[];
   locationPages?: {
@@ -42,7 +42,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Add products list page
   urls.push({
     url: `${siteUrl}/products`,
-    lastModified: new Date().toISOString(),
     changeFrequency: "weekly" as const,
     priority: 0.9,
   });
@@ -56,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Add product details page
     urls.push({
       url: `${siteUrl}/products/${product.productSlug}`,
-      lastModified: product._updatedAt || new Date().toISOString(),
+      lastModified: product._updatedAt,
       changeFrequency: "monthly" as const,
       priority: 0.9,
       images: images.length > 0 ? images : undefined,
@@ -67,7 +66,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       if (locationPage.published && locationPage.enableIndexing) {
         urls.push({
           url: `${siteUrl}/products/${product.productSlug}/${locationPage.citySlug}`,
-          lastModified: product._updatedAt || new Date().toISOString(),
+          lastModified: product._updatedAt,
           changeFrequency: "monthly" as const,
           priority: 0.7,
           images: images.length > 0 ? images : undefined,

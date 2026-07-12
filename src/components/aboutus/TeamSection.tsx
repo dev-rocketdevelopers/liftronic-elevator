@@ -4,11 +4,13 @@ import { useState } from "react";
 import type { TeamMember as TeamMemberType } from "~/sanity/lib/aboutTypes";
 import TeamMemberModal from "./TeamMemberModal";
 
+const FALLBACK_CREATED_AT = "1970-01-01T00:00:00.000Z";
+
 // Fallback data
 const fallbackMembers: TeamMemberType[] = [
   {
     _id: "1",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     name: "Michael Rodriguez",
     position: "Chief Executive Officer",
     bio: "With over 20 years in the elevator industry, Michael leads Liftronic with a vision of innovation and excellence. His expertise spans from technical engineering to strategic business development.",
@@ -20,7 +22,7 @@ const fallbackMembers: TeamMemberType[] = [
   },
   {
     _id: "2",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     name: "Sarah Chen",
     position: "Chief Technology Officer",
     bio: "Sarah spearheads our technology initiatives, ensuring Liftronic stays at the forefront of elevator innovation. She holds multiple patents in elevator safety systems.",
@@ -32,7 +34,7 @@ const fallbackMembers: TeamMemberType[] = [
   },
   {
     _id: "3",
-    _createdAt: new Date().toISOString(),
+    _createdAt: FALLBACK_CREATED_AT,
     name: "David Thompson",
     position: "Head of Operations",
     bio: "David oversees all installation and maintenance operations, ensuring every project meets our high standards of quality and safety. His attention to detail is unmatched.",
@@ -50,7 +52,7 @@ type TeamSectionProps = {
 
 export default function TeamSection({ members }: TeamSectionProps) {
   const [selectedMember, setSelectedMember] = useState<TeamMemberType | null>(
-    null
+    null,
   );
   const teamMembers = members || fallbackMembers;
 

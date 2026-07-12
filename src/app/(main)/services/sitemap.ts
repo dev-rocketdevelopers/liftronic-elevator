@@ -5,7 +5,7 @@ import { getSiteUrl } from "~/lib/site-url";
 
 type ServiceSitemap = {
   slug: string;
-  _updatedAt?: string;
+  _updatedAt: string;
   sitemapPriority?: number;
   changeFrequency?: "daily" | "weekly" | "monthly" | "yearly";
 };
@@ -29,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const serviceUrls: MetadataRoute.Sitemap = services.map((service) => ({
     url: `${siteUrl}/services/${service.slug}`,
-    lastModified: service._updatedAt || new Date().toISOString(),
+    lastModified: service._updatedAt,
     changeFrequency:
       (service.changeFrequency as "daily" | "weekly" | "monthly" | "yearly") ||
       "monthly",
@@ -40,7 +40,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const serviceListPage: MetadataRoute.Sitemap = [
     {
       url: `${siteUrl}/services`,
-      lastModified: new Date().toISOString(),
       changeFrequency: "weekly" as const,
       priority: 0.9,
     },

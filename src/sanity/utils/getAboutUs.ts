@@ -1,4 +1,5 @@
 import { groq } from "next-sanity";
+import { cache } from "react";
 import { client } from "~/sanity/lib/client";
 import type {
   CompanyInfo,
@@ -9,7 +10,7 @@ import type {
 } from "~/sanity/lib/aboutTypes";
 
 // Get company information
-export async function getCompanyInfo(): Promise<CompanyInfo | null> {
+export const getCompanyInfo = cache(async (): Promise<CompanyInfo | null> => {
   const query = groq`*[_type == "companyInfo"][0] {
     _id,
     _createdAt,
@@ -31,8 +32,12 @@ export async function getCompanyInfo(): Promise<CompanyInfo | null> {
     homepageFeatures
   }`;
 
-  return client.fetch<CompanyInfo | null>(query);
-}
+  return client.fetch<CompanyInfo | null>(
+    query,
+    {},
+    { next: { revalidate: 86400 } },
+  );
+});
 
 // Get timeline milestones
 export async function getTimeline(): Promise<Timeline[]> {

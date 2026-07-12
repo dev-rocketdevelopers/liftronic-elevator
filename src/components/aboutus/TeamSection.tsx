@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import type { TeamMember as TeamMemberType } from "~/sanity/lib/aboutTypes";
 import TeamMemberModal from "./TeamMemberModal";
@@ -79,6 +80,19 @@ export default function TeamSection({ members }: TeamSectionProps) {
               key={member._id}
               className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
             >
+              {/* Profile Image */}
+              <div className="relative aspect-square overflow-hidden bg-gray-100">
+                <Image
+                  src={member.image}
+                  alt={member.imageAlt || member.name}
+                  fill
+                  className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                  sizes="(max-width: 768px) calc(100vw - 3rem), (max-width: 1024px) 50vw, 33vw"
+                  placeholder={member.imageLqip ? "blur" : "empty"}
+                  blurDataURL={member.imageLqip}
+                />
+              </div>
+
               {/* Content Section */}
               <div className="p-6">
                 <div className="mb-4">

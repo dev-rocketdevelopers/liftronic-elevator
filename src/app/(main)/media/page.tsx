@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import CallToActionSection from "~/components/CallToActionSection";
 import PageIntroBody from "~/components/PageIntroBody";
-import { client } from "~/sanity/lib/client";
 import { mediaQuery } from "~/sanity/lib/queries";
 import type { MediaItem } from "~/sanity/lib/mediaTypes";
 import MediaPageClient from "~/components/media/MediaPageClient";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
 
 export const metadata: Metadata = {
   title: "Media Gallery - Elevator Installations & Projects | Lift Solutions",
@@ -29,10 +29,13 @@ export const metadata: Metadata = {
 };
 
 async function getAllMedia(): Promise<MediaItem[]> {
-  return client.fetch(mediaQuery, {}, { next: { revalidate: 86400 } });
+  return sanityFetch<MediaItem[]>({
+    query: mediaQuery,
+    tags: [SANITY_CACHE_TAGS.media],
+  });
 }
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = 604800;
 
 export default async function MediaPage() {
   const mediaItems = await getAllMedia();

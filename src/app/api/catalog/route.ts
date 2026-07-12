@@ -4,7 +4,23 @@ import { catalogFormSchema } from "~/lib/validation-schemas";
 import { submitToGoogleSheets } from "~/lib/google-sheets";
 import { generateCatalogFormEmail } from "~/lib/email-template";
 import { protectFormSubmission } from "~/lib/request-protection";
-import { client } from "~/sanity/lib/client";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
+
+type EmailConfig = {
+  host: string;
+  password: string;
+  port: number;
+  recipientEmail?: string[] | string | null;
+  secure: boolean;
+  user: string;
+  fromName?: string | null;
+};
+
+type CatalogFormSettings = {
+  catalogFormGoogleSheetUrl?: string | null;
+  catalogPdfUrl?: string | null;
+  emailConfig?: EmailConfig | null;
+};
 
 // Fetch homePageSettings from Sanity
 async function getHomePageSettings() {
@@ -22,7 +38,10 @@ async function getHomePageSettings() {
     }
   }`;
 
-  return await client.fetch(query);
+  return sanityFetch<CatalogFormSettings | null>({
+    query,
+    tags: [SANITY_CACHE_TAGS.forms],
+  });
 }
 
 function parseRecipientEmails(emails?: string[] | string | null) {
@@ -62,8 +81,11 @@ export async function POST(request: NextRequest) {
 
     if (!settings) {
       return NextResponse.json(
-        { error: "Form configuration not found. Please contact the administrator." },
-        { status: 500 }
+        {
+          error:
+            "Form configuration not found. Please contact the administrator.",
+        },
+        { status: 500 },
       );
     }
 
@@ -76,7 +98,7 @@ export async function POST(request: NextRequest) {
           name: validatedData.name,
           phone: validatedData.phone,
           location: validatedData.location || "",
-        }
+        },
       );
 
       if (!sheetsResult.success) {
@@ -95,8 +117,11 @@ export async function POST(request: NextRequest) {
       if (!recipients.length) {
         console.error("No recipient emails configured for catalog form.");
         return NextResponse.json(
-          { error: "Email configuration missing. Please contact the administrator." },
-          { status: 500 }
+          {
+            error:
+              "Email configuration missing. Please contact the administrator.",
+          },
+          { status: 500 },
         );
       }
 
@@ -118,7 +143,7 @@ export async function POST(request: NextRequest) {
       try {
         await transporter.sendMail({
           from: `"${fromName || "Liftronic Elevators"}" <${user}>`,
-          to: Array.isArray(recipientEmail) ? recipientEmail.join(", ") : recipientEmail,
+          to: recipients.join(", "),
           subject: "New Catalog Download Request",
           html: emailHtml,
         });
@@ -141,13 +166,13 @@ export async function POST(request: NextRequest) {
     if (error instanceof Error && error.name === "ZodError") {
       return NextResponse.json(
         { error: "Please check your form inputs and try again." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     return NextResponse.json(
       { error: "Something went wrong. Please try again later." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

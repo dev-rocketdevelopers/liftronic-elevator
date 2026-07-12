@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
-import { client } from "~/sanity/lib/client";
 import { groq } from "next-sanity";
 import { getSiteUrl } from "~/lib/site-url";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
 
 type MediaSitemap = {
   slug: string;
@@ -10,15 +10,14 @@ type MediaSitemap = {
 };
 
 async function getMediaForSitemap(): Promise<MediaSitemap[]> {
-  return client.fetch(
-    groq`*[_type == "media" && defined(publishedAt)] | order(publishedAt desc) {
+  return sanityFetch<MediaSitemap[]>({
+    query: groq`*[_type == "media" && defined(publishedAt)] | order(publishedAt desc) {
       "slug": _id,
       publishedAt,
       _updatedAt
     }`,
-    {},
-    { next: { revalidate: 86400 } }, // Revalidate daily
-  );
+    tags: [SANITY_CACHE_TAGS.mediaSitemap],
+  });
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

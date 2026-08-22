@@ -124,7 +124,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
       </div>
 
       {/* === MAIN CONTENT === */}
-      <div className="relative container mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-end lg:justify-between gap-8 lg:gap-12 pb-12 lg:pb-0">
+      <div className="relative container mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-8 lg:gap-12 pb-12 lg:pb-0">
         {/* Left content with floating parallax effect */}
         <div
           className="relative z-10 max-w-2xl text-center lg:text-left"

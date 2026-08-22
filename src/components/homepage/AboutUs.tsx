@@ -10,6 +10,7 @@ import {
 import { useState, useRef } from "react";
 import { motion } from "motion/react";
 import { PortableText } from "@portabletext/react";
+import ContactForm from "~/components/ContactForm";
 import type { CompanyInfo } from "~/sanity/lib/aboutTypes";
 
 interface AboutUsProps {
@@ -373,6 +374,48 @@ export default function AboutUs({ companyInfo }: AboutUsProps) {
               )}
             </div>
           </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="mt-10 md:mt-14 lg:mt-16 max-w-6xl mx-auto"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        >
+          <div className="overflow-hidden rounded-[28px] border border-gray-200 bg-white/90 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="p-6 sm:p-8 lg:p-10 border-b lg:border-r lg:border-b-0 border-gray-200 bg-gradient-to-br from-accent/5 via-white to-brand/5">
+                <div className="inline-flex items-center rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+                  Let&apos;s Talk
+                </div>
+                <h3 className="mt-4 text-2xl sm:text-3xl font-bold text-gray-900">
+                  Request a Quote
+                </h3>
+                <p className="mt-2 text-sm sm:text-base text-gray-600">
+                  Speak to our design & installation team
+                </p>
+                <p className="mt-6 text-sm sm:text-base leading-relaxed text-gray-700">
+                  Share your space details, project type, and goals. We&apos;ll guide you
+                  through the right elevator solution for your home, building, or
+                  commercial property.
+                </p>
+              </div>
+
+              <div className="p-6 sm:p-8 lg:p-10">
+                <ContactForm
+                  productOptions={[
+                    "Residential Lift",
+                    "Home Elevator",
+                    "Passenger Elevator",
+                    "Commercial Lift",
+                    "Hospital Lift",
+                    "Custom Elevator Solution",
+                  ]}
+                />
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         {/* FEATURE CARDS - Responsive grid with centered last row */}

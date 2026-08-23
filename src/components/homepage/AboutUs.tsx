@@ -383,26 +383,129 @@ export default function AboutUs({ companyInfo }: AboutUsProps) {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <div className="overflow-hidden rounded-[28px] border border-gray-200 bg-white/90 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm">
-            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]">
-              <div className="p-6 sm:p-8 lg:p-10 border-b lg:border-r lg:border-b-0 border-gray-200 bg-gradient-to-br from-accent/5 via-white to-brand/5">
-                <div className="inline-flex items-center rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-                  Let&apos;s Talk
+          <div className="overflow-hidden rounded-[28px] md:rounded-[32px] border border-gray-200 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm border-l-4 border-l-emerald-500 relative">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-start">
+              {/* Left Column: Details, Testimonial & Stats */}
+              <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between h-full border-b lg:border-r lg:border-b-0 border-gray-100">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold tracking-wider uppercase mb-4 w-fit border border-emerald-100/60">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                    LET&apos;S TALK
+                  </div>
+                  <h3 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+                    Request a Quote
+                  </h3>
+                  <p className="mt-2 text-base font-semibold text-gray-800">
+                    Speak to our design &amp; installation team
+                  </p>
+                  <p className="mt-3 text-sm sm:text-base leading-relaxed text-gray-500">
+                    Share your space details, project type, and goals. We&apos;ll guide you
+                    through the right elevator solution for your home, building, or
+                    commercial property.
+                  </p>
+
+                  {/* Testimonial Card */}
+                  <div className="mt-7 relative rounded-2xl bg-emerald-50/40 border border-emerald-100/80 p-5 sm:p-6">
+                    {/* Floating Quote Icon */}
+                    <div className="absolute -top-3.5 left-5 w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20">
+                      <svg
+                        className="w-3.5 h-3.5 fill-current"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                      </svg>
+                    </div>
+
+                    {/* Star Rating */}
+                    <div className="flex items-center gap-1 text-amber-400 text-sm mt-1 mb-2.5">
+                      {[...Array(5)].map((_, i) => (
+                        <svg
+                          key={i}
+                          className="w-4 h-4 fill-current"
+                          viewBox="0 0 20 20"
+                          aria-hidden="true"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+
+                    {/* Review Text */}
+                    <p className="text-xs sm:text-[13px] leading-relaxed text-gray-700 font-normal">
+                      Very satisfied with Liftronic service. From inquiry to
+                      installation, everything was handled professionally by
+                      their team. They are supportive, and answered all my
+                      questions patiently. The lift quality and finishing are
+                      excellent.
+                    </p>
+
+                    {/* Author & Verified Badge */}
+                    <div className="mt-4 flex items-center justify-between gap-3 pt-3 border-t border-emerald-100/60">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-emerald-500 text-white font-bold text-xs flex items-center justify-center flex-shrink-0">
+                          R
+                        </div>
+                        <div>
+                          <div className="text-xs sm:text-sm font-bold text-gray-900 leading-none">
+                            R. Sharma
+                          </div>
+                          <div className="text-[11px] text-gray-500 mt-1">
+                            Residential Lift · Mumbai
+                          </div>
+                        </div>
+                      </div>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white border border-emerald-200/80 text-emerald-600 text-[11px] font-semibold shadow-xs">
+                        <svg
+                          className="w-3 h-3 stroke-current"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          strokeWidth="2.5"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        Verified
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="mt-4 text-2xl sm:text-3xl font-bold text-gray-900">
-                  Request a Quote
-                </h3>
-                <p className="mt-2 text-sm sm:text-base text-gray-600">
-                  Speak to our design & installation team
-                </p>
-                <p className="mt-6 text-sm sm:text-base leading-relaxed text-gray-700">
-                  Share your space details, project type, and goals. We&apos;ll guide you
-                  through the right elevator solution for your home, building, or
-                  commercial property.
-                </p>
+
+                {/* Stats Bar */}
+                <div className="mt-6 grid grid-cols-3 divide-x divide-gray-100 border border-gray-100 rounded-2xl p-4 bg-gray-50/60 text-center">
+                  <div className="px-1 sm:px-2">
+                    <div className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">
+                      500+
+                    </div>
+                    <div className="text-[11px] text-gray-500 font-medium mt-0.5">
+                      Lifts Installed
+                    </div>
+                  </div>
+                  <div className="px-1 sm:px-2">
+                    <div className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight flex items-center justify-center gap-0.5">
+                      4.9<span className="text-base text-gray-900">★</span>
+                    </div>
+                    <div className="text-[11px] text-gray-500 font-medium mt-0.5">
+                      Customer Rating
+                    </div>
+                  </div>
+                  <div className="px-1 sm:px-2">
+                    <div className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">
+                      24/7
+                    </div>
+                    <div className="text-[11px] text-gray-500 font-medium mt-0.5">
+                      Service Support
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="p-6 sm:p-8 lg:p-10">
+              {/* Right Column: Contact Form */}
+              <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10">
                 <ContactForm
                   productOptions={[
                     "Residential Lift",

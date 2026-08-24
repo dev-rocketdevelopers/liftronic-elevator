@@ -26,6 +26,7 @@ export const getCompanyInfo = cache(async (): Promise<CompanyInfo | null> => {
     "heroImage": heroImage.asset->url,
     "heroImageAlt": heroImage.alt,
     stats,
+    requestQuoteStats,
     homepageAboutTitle,
     homepageAboutSubtitle,
     homepageAboutDescription,

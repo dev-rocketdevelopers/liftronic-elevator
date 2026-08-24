@@ -291,7 +291,7 @@ export default async function Home() {
         />
       ))}
       <main suppressHydrationWarning>
-        <Hero socials={socials} contactInfo={contactInfo} />
+        <Hero socials={socials} />
         <AboutUs companyInfo={companyInfo} />
         <Services services={services} />
         <ProductsInteractive products={homeData.featuredProducts} />

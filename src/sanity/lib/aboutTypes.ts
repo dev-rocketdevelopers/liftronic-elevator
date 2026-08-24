@@ -13,6 +13,7 @@ export type CompanyInfo = {
   heroImage?: string;
   heroImageAlt?: string;
   stats?: CompanyStat[];
+  requestQuoteStats?: RequestQuoteStat[];
   // Homepage About Section
   homepageAboutTitle?: string;
   homepageAboutSubtitle?: string;
@@ -27,6 +28,11 @@ export type CompanyStat = {
   value: number;
   suffix?: string;
   icon?: string;
+};
+
+export type RequestQuoteStat = {
+  value: string;
+  label: string;
 };
 
 export type HomepageFeature = {

@@ -117,6 +117,36 @@ export const companyInfoType = defineType({
         },
       ],
     }),
+    defineField({
+      name: "requestQuoteStats",
+      title: "Request a Quote Statistics",
+      type: "array",
+      description: "Statistics displayed beside the homepage Request a Quote form",
+      initialValue: [
+        { value: "500+", label: "Lifts Installed" },
+        { value: "4.9★", label: "Customer Rating" },
+        { value: "24/7", label: "Service Support" },
+      ],
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "value",
+              title: "Value",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "label",
+              title: "Label",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+        },
+      ],
+    }),
     // Homepage About Section fields
     defineField({
       name: "homepageAboutTitle",

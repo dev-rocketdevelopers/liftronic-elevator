@@ -3,34 +3,20 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { useSmoothScroll } from "~/hooks/useSmoothScroll";
 import { useOptionalPopupManager } from "~/contexts/PopupManagerContext";
-import { FiHeadphones, FiMail, FiPhoneCall } from "react-icons/fi";
-import { Social, ContactInfo } from "~/../typings";
+import { FiHeadphones, FiMail } from "react-icons/fi";
+import { Social } from "~/../typings";
 import { getIcon } from "~/sanity/utils/iconMapper";
 
 interface HeroProps {
   socials: Social[];
-  contactInfo: ContactInfo | null;
 }
 
-export default function Hero({ socials, contactInfo }: HeroProps) {
+export default function Hero({ socials }: HeroProps) {
   const { scrollTo } = useSmoothScroll();
   const popupManager = useOptionalPopupManager();
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
-
-  // Fallback data in case Sanity data is not available
-  const fallbackContactInfo = {
-    supportPhone: "1800 890 8411",
-    supportPhoneLabel: "Liftronic Care",
-    email: "info@liftronicelevator.com",
-    emailLabel: "Send us Email",
-    salesPhone: "+91 9028226664",
-    salesPhoneLabel: "Sales Enquiry",
-    serviceArea: "Serving Mumbai, Pune & major metros",
-  };
-
-  const contact = contactInfo || fallbackContactInfo;
 
   useEffect(() => {
     // Lazy load video after initial paint

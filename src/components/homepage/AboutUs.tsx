@@ -227,6 +227,12 @@ export default function AboutUs({ companyInfo }: AboutUsProps) {
     { label: "Ongoing Projects", value: 200, suffix: "+" },
   ];
 
+  const defaultRequestQuoteStats = [
+    { value: "500+", label: "Lifts Installed" },
+    { value: "4.9★", label: "Customer Rating" },
+    { value: "24/7", label: "Service Support" },
+  ];
+
   const defaultFeatures = [
     {
       title: "European Technology",
@@ -252,6 +258,8 @@ export default function AboutUs({ companyInfo }: AboutUsProps) {
 
   // Use Sanity data or fallback
   const stats = companyInfo?.stats || defaultStats;
+  const requestQuoteStats =
+    companyInfo?.requestQuoteStats || defaultRequestQuoteStats;
   const features = companyInfo?.homepageFeatures || defaultFeatures;
   const title = companyInfo?.homepageAboutTitle || "About Liftronic";
   const subtitle =
@@ -477,30 +485,16 @@ export default function AboutUs({ companyInfo }: AboutUsProps) {
 
                 {/* Stats Bar */}
                 <div className="mt-6 grid grid-cols-3 divide-x divide-gray-100 border border-gray-100 rounded-2xl p-4 bg-gray-50/60 text-center">
-                  <div className="px-1 sm:px-2">
-                    <div className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">
-                      500+
+                  {requestQuoteStats.slice(0, 3).map((stat) => (
+                    <div className="px-1 sm:px-2" key={stat.label}>
+                      <div className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">
+                        {stat.value}
+                      </div>
+                      <div className="text-[11px] text-gray-500 font-medium mt-0.5">
+                        {stat.label}
+                      </div>
                     </div>
-                    <div className="text-[11px] text-gray-500 font-medium mt-0.5">
-                      Lifts Installed
-                    </div>
-                  </div>
-                  <div className="px-1 sm:px-2">
-                    <div className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight flex items-center justify-center gap-0.5">
-                      4.9<span className="text-base text-gray-900">★</span>
-                    </div>
-                    <div className="text-[11px] text-gray-500 font-medium mt-0.5">
-                      Customer Rating
-                    </div>
-                  </div>
-                  <div className="px-1 sm:px-2">
-                    <div className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">
-                      24/7
-                    </div>
-                    <div className="text-[11px] text-gray-500 font-medium mt-0.5">
-                      Service Support
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
 

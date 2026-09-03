@@ -1,5 +1,6 @@
 import { groq } from "next-sanity";
 import { client } from "~/sanity/lib/client";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
 import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
@@ -49,11 +50,10 @@ const homePageSeoQuery = groq`*[_type == "homePageSeo"][0] {
 }`;
 
 export async function getHomePageSeo(): Promise<HomePageSeoData | null> {
-  const data = await client.fetch(
-    homePageSeoQuery,
-    {},
-    { next: { revalidate: 86400 } },
-  );
+  const data = await sanityFetch<HomePageSeoData | null>({
+    query: homePageSeoQuery,
+    tags: [SANITY_CACHE_TAGS.homeSeo],
+  });
   return data;
 }
 

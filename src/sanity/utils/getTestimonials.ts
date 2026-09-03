@@ -1,7 +1,7 @@
 // frontend call to get testimonials
 import { Testimonial } from "../../../typings";
 import { groq } from "next-sanity";
-import { client } from "~/sanity/lib/client";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
 
 export async function getTestimonials(): Promise<Testimonial[]> {
   const query = groq`*[_type == "testimonial"]{
@@ -15,5 +15,8 @@ export async function getTestimonials(): Promise<Testimonial[]> {
     }
   }`;
 
-  return client.fetch<Testimonial[]>(query);
+  return sanityFetch<Testimonial[]>({
+    query,
+    tags: [SANITY_CACHE_TAGS.home],
+  });
 }

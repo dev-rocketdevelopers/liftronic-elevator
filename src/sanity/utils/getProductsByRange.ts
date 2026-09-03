@@ -1,6 +1,6 @@
-import { client } from "../lib/client";
 import { productRangeBySlugQuery } from "../lib/queries";
 import type { ProductRangeFull } from "../lib/productRangeTypes";
+import { sanityFetch, SANITY_CACHE_TAGS } from "../lib/cache";
 
 /**
  * Fetches a product range by slug with all its products
@@ -10,9 +10,9 @@ import type { ProductRangeFull } from "../lib/productRangeTypes";
 export async function getProductRangeBySlug(
   slug: string,
 ): Promise<ProductRangeFull | null> {
-  return client.fetch<ProductRangeFull | null>(
-    productRangeBySlugQuery,
-    { slug },
-    { next: { revalidate: 86400 } }, // Revalidate daily
-  );
+  return sanityFetch<ProductRangeFull | null>({
+    query: productRangeBySlugQuery,
+    params: { slug },
+    tags: [SANITY_CACHE_TAGS.productRanges],
+  });
 }

@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
 import { cache } from "react";
 import { Social } from "../../../typings";
-import { client } from "../lib/client";
+import { sanityFetch, SANITY_CACHE_TAGS } from "../lib/cache";
 
 export const getSocial = cache(async (): Promise<Social[]> => {
   const query = groq`*[_type == "social"]{
@@ -15,5 +15,8 @@ export const getSocial = cache(async (): Promise<Social[]> => {
       slug
     }
   }`;
-  return client.fetch<Social[]>(query, {}, { next: { revalidate: 86400 } });
+  return sanityFetch<Social[]>({
+    query,
+    tags: [SANITY_CACHE_TAGS.socials],
+  });
 });

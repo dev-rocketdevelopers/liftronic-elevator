@@ -1,8 +1,8 @@
 // Utility functions to fetch certificates from Sanity
 
-import { client } from "../lib/client";
 import { urlFor } from "../lib/image";
 import type { Certificate, CertificateRaw } from "../lib/certificateTypes";
+import { sanityFetch, SANITY_CACHE_TAGS } from "../lib/cache";
 
 /**
  * Get all certificates ordered by displayOrder
@@ -22,7 +22,10 @@ export async function getAllCertificates(): Promise<Certificate[]> {
       isFeatured
     }`;
 
-    const certificates: CertificateRaw[] = await client.fetch(query);
+    const certificates = await sanityFetch<CertificateRaw[]>({
+      query,
+      tags: [SANITY_CACHE_TAGS.about, SANITY_CACHE_TAGS.certificates],
+    });
 
     return certificates.map((cert) => ({
       ...cert,
@@ -54,7 +57,10 @@ export async function getFeaturedCertificates(): Promise<Certificate[]> {
       isFeatured
     }`;
 
-    const certificates: CertificateRaw[] = await client.fetch(query);
+    const certificates = await sanityFetch<CertificateRaw[]>({
+      query,
+      tags: [SANITY_CACHE_TAGS.about, SANITY_CACHE_TAGS.certificates],
+    });
 
     return certificates.map((cert) => ({
       ...cert,
@@ -88,7 +94,10 @@ export async function getCertificates(limit?: number): Promise<Certificate[]> {
       isFeatured
     }`;
 
-    const certificates: CertificateRaw[] = await client.fetch(query);
+    const certificates = await sanityFetch<CertificateRaw[]>({
+      query,
+      tags: [SANITY_CACHE_TAGS.about, SANITY_CACHE_TAGS.certificates],
+    });
 
     return certificates.map((cert) => ({
       ...cert,
@@ -105,7 +114,9 @@ export async function getCertificates(limit?: number): Promise<Certificate[]> {
 /**
  * Get a single certificate by ID
  */
-export async function getCertificateById(id: string): Promise<Certificate | null> {
+export async function getCertificateById(
+  id: string,
+): Promise<Certificate | null> {
   try {
     const query = `*[_type == "certificate" && _id == $id][0] {
       _id,
@@ -120,7 +131,11 @@ export async function getCertificateById(id: string): Promise<Certificate | null
       isFeatured
     }`;
 
-    const certificate: CertificateRaw | null = await client.fetch(query, { id });
+    const certificate = await sanityFetch<CertificateRaw | null>({
+      query,
+      params: { id },
+      tags: [SANITY_CACHE_TAGS.about, SANITY_CACHE_TAGS.certificates],
+    });
 
     if (!certificate) return null;
 

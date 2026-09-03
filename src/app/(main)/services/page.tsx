@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = 604800;
 
 export default async function ServicesPage() {
   // Fetch services from Sanity backend

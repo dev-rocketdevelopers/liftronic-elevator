@@ -2,21 +2,28 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BlogPostClient from "./BlogPostClient";
-import { client } from "~/sanity/lib/client";
 import { postBySlugQuery, postSlugsQuery } from "~/sanity/lib/queries";
+import {
+  sanityFetch,
+  SANITY_CACHE_TAGS,
+  SANITY_DETAIL_TAGS,
+} from "~/sanity/lib/cache";
 import type { BlogPostFull } from "~/sanity/lib/blogTypes";
 import { getSiteUrl } from "~/lib/site-url";
 
 async function getPostBySlug(slug: string): Promise<BlogPostFull | null> {
-  return client.fetch(
-    postBySlugQuery,
-    { slug },
-    { next: { revalidate: 86400 } },
-  );
+  return sanityFetch<BlogPostFull | null>({
+    query: postBySlugQuery,
+    params: { slug },
+    tags: [SANITY_DETAIL_TAGS.post(slug)],
+  });
 }
 
 async function getAllPostSlugs(): Promise<string[]> {
-  return client.fetch(postSlugsQuery, {}, { next: { revalidate: 86400 } });
+  return sanityFetch<string[]>({
+    query: postSlugsQuery,
+    tags: [SANITY_CACHE_TAGS.blogs],
+  });
 }
 
 // Legacy blog post data - kept for reference, can be removed after content migration
@@ -200,4 +207,4 @@ export async function generateStaticParams() {
   }));
 }
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = 604800;

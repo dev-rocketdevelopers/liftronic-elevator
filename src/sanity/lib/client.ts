@@ -6,7 +6,8 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
+  // Public reads use the CDN. Signed webhooks wait for CDN propagation before invalidating.
+  useCdn: true,
   // Add timeout and retry configuration
   requestTagPrefix: "sanity",
   perspective: "published",

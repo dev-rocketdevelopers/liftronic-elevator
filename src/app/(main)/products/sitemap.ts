@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
-import { client } from "~/sanity/lib/client";
 import { groq } from "next-sanity";
 import { getSiteUrl } from "~/lib/site-url";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
 
 type ProductSitemap = {
   productSlug: string;
@@ -16,8 +16,8 @@ type ProductSitemap = {
 };
 
 async function getProductsForSitemap(): Promise<ProductSitemap[]> {
-  return client.fetch(
-    groq`*[_type == "product" && defined(slug.current)] | order(_updatedAt desc) {
+  return sanityFetch<ProductSitemap[]>({
+    query: groq`*[_type == "product" && defined(slug.current)] | order(_updatedAt desc) {
       "productSlug": slug.current,
       _updatedAt,
       "mainImage": mainImage.asset->url,
@@ -28,9 +28,8 @@ async function getProductsForSitemap(): Promise<ProductSitemap[]> {
         enableIndexing
       }
     }`,
-    {},
-    { next: { revalidate: 86400 } },
-  );
+    tags: [SANITY_CACHE_TAGS.productSitemap],
+  });
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

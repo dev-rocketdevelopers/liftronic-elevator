@@ -4,7 +4,32 @@ import { privateExperienceFormSchema } from "~/lib/validation-schemas";
 import { submitToGoogleSheets } from "~/lib/google-sheets";
 import { generatePrivateExperienceEmail } from "~/lib/email-template";
 import { protectFormSubmission } from "~/lib/request-protection";
-import { client } from "~/sanity/lib/client";
+import {
+  sanityFetch,
+  SANITY_CACHE_TAGS,
+  SANITY_DETAIL_TAGS,
+} from "~/sanity/lib/cache";
+
+type EmailConfig = {
+  host: string;
+  password: string;
+  port: number;
+  secure: boolean;
+  user: string;
+  fromName?: string | null;
+};
+
+type GlobalSettings = {
+  emailConfig?: EmailConfig | null;
+};
+
+type BranchFormConfig = {
+  name: string;
+  privateExperienceFormConfig?: {
+    formGoogleSheetUrl?: string | null;
+    formRecipientEmails?: string[] | string | null;
+  } | null;
+};
 
 // Fetch global SMTP config from homePageSettings
 async function getEmailConfig() {
@@ -19,7 +44,10 @@ async function getEmailConfig() {
     }
   }`;
 
-  return await client.fetch(query);
+  return sanityFetch<GlobalSettings | null>({
+    query,
+    tags: [SANITY_CACHE_TAGS.forms],
+  });
 }
 
 // Fetch branch-specific form config
@@ -32,7 +60,11 @@ async function getBranchFormConfig(slug: string) {
     }
   }`;
 
-  return await client.fetch(query, { slug });
+  return sanityFetch<BranchFormConfig | null>({
+    query,
+    params: { slug },
+    tags: [SANITY_CACHE_TAGS.forms, SANITY_DETAIL_TAGS.branch(slug)],
+  });
 }
 
 export async function POST(request: NextRequest) {
@@ -58,8 +90,11 @@ export async function POST(request: NextRequest) {
 
     if (!branchConfig?.privateExperienceFormConfig) {
       return NextResponse.json(
-        { error: "Form configuration not found for this branch. Please contact the administrator." },
-        { status: 500 }
+        {
+          error:
+            "Form configuration not found for this branch. Please contact the administrator.",
+        },
+        { status: 500 },
       );
     }
 
@@ -127,13 +162,13 @@ export async function POST(request: NextRequest) {
     if (error instanceof Error && error.name === "ZodError") {
       return NextResponse.json(
         { error: "Please check your form inputs and try again." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     return NextResponse.json(
       { error: "Something went wrong. Please try again later." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

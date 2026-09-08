@@ -73,6 +73,7 @@ export default function CatalogForm({ onSuccess }: CatalogFormProps) {
           if (onSuccess) {
             setTimeout(onSuccess, 1500);
           }
+          setTimeout(() => window.location.assign("/thankyou"), 1500);
         } else {
           // If no catalog URL, show error
           setSubmitStatus({

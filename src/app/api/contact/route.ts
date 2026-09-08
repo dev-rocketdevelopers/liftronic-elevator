@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 import { contactFormSchema } from "~/lib/validation-schemas";
 import { submitToGoogleSheets } from "~/lib/google-sheets";
 import { generateContactFormEmail } from "~/lib/email-template";
+import { parseRecipientEmails } from "~/lib/email-recipients";
 import { protectFormSubmission } from "~/lib/request-protection";
 import { client } from "~/sanity/lib/client";
 
@@ -22,23 +23,6 @@ async function getHomePageSettings() {
   }`;
 
   return await client.fetch(query);
-}
-
-function parseRecipientEmails(emails?: string[] | string | null) {
-  if (!emails) {
-    return [];
-  }
-
-  // Handle array of emails (new format)
-  if (Array.isArray(emails)) {
-    return emails.map((email) => email.trim()).filter(Boolean);
-  }
-
-  // Handle legacy string format (comma/semicolon/newline separated)
-  return emails
-    .split(/[;,\n]/)
-    .map((email) => email.trim())
-    .filter(Boolean);
 }
 
 export async function POST(request: NextRequest) {
@@ -120,7 +104,7 @@ export async function POST(request: NextRequest) {
       try {
         await transporter.sendMail({
           from: `"${fromName || "Liftronic Elevators"}" <${user}>`,
-          to: Array.isArray(recipientEmail) ? recipientEmail.join(", ") : recipientEmail,
+          to: recipients.join(", "),
           subject: `New Contact Form Submission - ${validatedData.productInterest}`,
           html: emailHtml,
           replyTo: validatedData.email || undefined,

@@ -76,6 +76,7 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
           website: "",
         });
         setUserTyping(false);
+        window.location.assign("/thankyou");
       } else {
         setSubmitStatus({
           type: "error",

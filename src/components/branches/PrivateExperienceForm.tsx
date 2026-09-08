@@ -67,6 +67,7 @@ export default function PrivateExperienceForm({
           branchName,
           branchSlug,
         });
+        window.location.assign("/thankyou");
       } else {
         setSubmitStatus({
           type: "error",

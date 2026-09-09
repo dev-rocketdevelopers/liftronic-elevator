@@ -98,6 +98,24 @@ export default function RootLayout({
             `,
           }}
         />
+        {/* Google Ads tag */}
+        <Script
+          id="google-ads-gtag-src"
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=AW-11207817656"
+        />
+        <Script
+          id="google-ads-gtag-config"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-11207817656');
+            `,
+          }}
+        />
         {/* Resource hints for Sanity CDN */}
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
         <link

@@ -1,6 +1,10 @@
 import { groq } from "next-sanity";
 import { Post } from "../../../typings";
-import { client } from "../lib/client";
+import {
+  sanityFetch,
+  SANITY_CACHE_TAGS,
+  SANITY_DETAIL_TAGS,
+} from "../lib/cache";
 
 export async function getPosts(): Promise<Post[]> {
   const query = groq`*[_type == "post"]{
@@ -15,7 +19,10 @@ export async function getPosts(): Promise<Post[]> {
     body
   }`;
 
-  return client.fetch<Post[]>(query);
+  return sanityFetch<Post[]>({
+    query,
+    tags: [SANITY_CACHE_TAGS.blogs],
+  });
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
@@ -31,5 +38,9 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     body
   }`;
 
-  return client.fetch<Post | null>(query, { slug });
+  return sanityFetch<Post | null>({
+    query,
+    params: { slug },
+    tags: [SANITY_DETAIL_TAGS.post(slug)],
+  });
 }

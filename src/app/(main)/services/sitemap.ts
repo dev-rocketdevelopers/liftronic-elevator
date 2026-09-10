@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
-import { client } from "~/sanity/lib/client";
 import { groq } from "next-sanity";
 import { getSiteUrl } from "~/lib/site-url";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
 
 type ServiceSitemap = {
   slug: string;
@@ -11,16 +11,15 @@ type ServiceSitemap = {
 };
 
 async function getServicesForSitemap(): Promise<ServiceSitemap[]> {
-  return client.fetch(
-    groq`*[_type == "service" && defined(slug.current)] | order(_updatedAt desc) {
+  return sanityFetch<ServiceSitemap[]>({
+    query: groq`*[_type == "service" && defined(slug.current)] | order(_updatedAt desc) {
       "slug": slug.current,
       _updatedAt,
       sitemapPriority,
       changeFrequency
     }`,
-    {},
-    { next: { revalidate: 86400 } },
-  );
+    tags: [SANITY_CACHE_TAGS.serviceSitemap],
+  });
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

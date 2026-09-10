@@ -62,7 +62,7 @@ export async function generateMetadata(
   };
 }
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = 604800;
 
 export default async function ProductsPage(props: ProductsPageProps) {
   const searchParams = await props.searchParams;

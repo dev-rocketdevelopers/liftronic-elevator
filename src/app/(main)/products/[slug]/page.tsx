@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ProductPageClient from "./ProductPageClient";
-import { client } from "~/sanity/lib/client";
 import { productBySlugQuery, productSlugsQuery } from "~/sanity/lib/queries";
+import {
+  sanityFetch,
+  SANITY_CACHE_TAGS,
+  SANITY_DETAIL_TAGS,
+} from "~/sanity/lib/cache";
 import type { ProductFull } from "~/sanity/lib/productTypes";
 import { getSiteUrl } from "~/lib/site-url";
 
 async function getProductBySlug(slug: string): Promise<ProductFull | null> {
-  return client.fetch(
-    productBySlugQuery,
-    { slug },
-    { next: { revalidate: 86400 } },
-  );
+  return sanityFetch<ProductFull | null>({
+    query: productBySlugQuery,
+    params: { slug },
+    tags: [SANITY_DETAIL_TAGS.product(slug)],
+  });
 }
 
 async function getAllProductSlugs(): Promise<string[]> {
-  return client.fetch(productSlugsQuery, {}, { next: { revalidate: 86400 } });
+  return sanityFetch<string[]>({
+    query: productSlugsQuery,
+    tags: [SANITY_CACHE_TAGS.products],
+  });
 }
 
 type Props = {
@@ -162,4 +169,4 @@ export async function generateStaticParams() {
   }));
 }
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = 604800;

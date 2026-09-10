@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { client } from "~/sanity/lib/client";
 import { groq } from "next-sanity";
 import type { PortableTextBlock } from "@portabletext/types";
 import ProductPageClient from "../ProductPageClient";
 import type { ProductFull } from "~/sanity/lib/productTypes";
 import { getSiteUrl } from "~/lib/site-url";
+import {
+  sanityFetch,
+  SANITY_CACHE_TAGS,
+  SANITY_DETAIL_TAGS,
+} from "~/sanity/lib/cache";
 
 interface LocationPageData {
   city: string;
@@ -69,11 +73,14 @@ async function getProductWithLocation(
     }
   }`;
 
-  const product = await client.fetch(
+  const product = await sanityFetch<ProductWithLocation | null>({
     query,
-    { productSlug, citySlug },
-    { next: { revalidate: 86400 } },
-  );
+    params: { productSlug, citySlug },
+    tags: [
+      SANITY_DETAIL_TAGS.product(productSlug),
+      SANITY_DETAIL_TAGS.productLocation(productSlug, citySlug),
+    ],
+  });
 
   if (!product || !product.locationPage || !product.locationPage.published) {
     return null;
@@ -90,11 +97,12 @@ async function getAllLocationProductParams() {
     }
   }`;
 
-  const products = await client.fetch(
+  const products = await sanityFetch<
+    Array<{ productSlug: string; cities: Array<{ citySlug: string }> }>
+  >({
     query,
-    {},
-    { next: { revalidate: 86400 } },
-  );
+    tags: [SANITY_CACHE_TAGS.products],
+  });
 
   const params: { slug: string; city: string }[] = [];
 
@@ -274,4 +282,4 @@ export async function generateStaticParams() {
   return await getAllLocationProductParams();
 }
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = 604800;

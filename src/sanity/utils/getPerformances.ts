@@ -1,6 +1,6 @@
 import { groq } from "next-sanity";
-import { client } from "../lib/client";
 import { Performance } from "../../../typings";
+import { sanityFetch, SANITY_CACHE_TAGS } from "../lib/cache";
 
 export async function getPerformances(): Promise<Performance[]> {
   const query = groq`*[_type == "performance"]{
@@ -12,5 +12,8 @@ export async function getPerformances(): Promise<Performance[]> {
       alt
     }
   }`;
-  return client.fetch<Performance[]>(query);
+  return sanityFetch<Performance[]>({
+    query,
+    tags: [SANITY_CACHE_TAGS.services],
+  });
 }

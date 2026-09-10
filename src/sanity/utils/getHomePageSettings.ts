@@ -1,6 +1,6 @@
 import { cache } from "react";
-import { client } from "../lib/client";
 import { homePageSettingsQuery } from "../lib/queries";
+import { sanityFetch, SANITY_CACHE_TAGS } from "../lib/cache";
 import type { FAQ } from "../lib/homePageTypes";
 import type { PortableTextBlock } from "@portabletext/types";
 
@@ -22,11 +22,10 @@ export interface HomePageSettings {
 
 export const getHomePageSettings = cache(
   async (): Promise<HomePageSettings> => {
-    const settings = await client.fetch(
-      homePageSettingsQuery,
-      {},
-      { next: { revalidate: 86400 } }, // Cache for 24 hours
-    );
+    const settings = await sanityFetch<HomePageSettings>({
+      query: homePageSettingsQuery,
+      tags: [SANITY_CACHE_TAGS.homeSettings],
+    });
 
     // Default values
     const defaults: HomePageSettings = {

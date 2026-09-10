@@ -1,6 +1,10 @@
 import { cache } from "react";
-import { client } from "../lib/client";
 import type { Branch } from "../lib/branchTypes";
+import {
+  sanityFetch,
+  SANITY_CACHE_TAGS,
+  SANITY_DETAIL_TAGS,
+} from "../lib/cache";
 
 const branchQuery = `*[_type == "branch" && isActive == true] | order(order asc) {
   _id,
@@ -123,19 +127,18 @@ const singleBranchQuery = `*[_type == "branch" && slug.current == $slug && isAct
 }`;
 
 export const getBranches = cache(async (): Promise<Branch[]> => {
-  const branches = await client.fetch<Branch[]>(
-    branchQuery,
-    {},
-    { next: { revalidate: 86400 } }, // Cache for 24 hours
-  );
+  const branches = await sanityFetch<Branch[]>({
+    query: branchQuery,
+    tags: [SANITY_CACHE_TAGS.branches],
+  });
   return branches;
 });
 
 export async function getBranchBySlug(slug: string): Promise<Branch | null> {
-  const branch = await client.fetch<Branch | null>(
-    singleBranchQuery,
-    { slug },
-    { next: { revalidate: 86400 } }, // Cache for 24 hours
-  );
+  const branch = await sanityFetch<Branch | null>({
+    query: singleBranchQuery,
+    params: { slug },
+    tags: [SANITY_DETAIL_TAGS.branch(slug)],
+  });
   return branch;
 }

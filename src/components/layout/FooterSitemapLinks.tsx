@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { client } from "~/sanity/lib/client";
 import { groq } from "next-sanity";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
 
 interface SitemapItem {
   title: string;
@@ -9,30 +9,27 @@ interface SitemapItem {
 
 async function getAllSitemapLinks() {
   const [productRanges, services, blogs] = await Promise.all([
-    client.fetch<SitemapItem[]>(
-      groq`*[_type == "productRange" && defined(slug.current)] | order(featured desc, order asc, title asc) {
+    sanityFetch<SitemapItem[]>({
+      query: groq`*[_type == "productRange" && defined(slug.current)] | order(featured desc, order asc, title asc) {
         title,
         "slug": slug.current
       }`,
-      {},
-      { next: { revalidate: 86400 } }, // 24 hour cache
-    ),
-    client.fetch<SitemapItem[]>(
-      groq`*[_type == "service" && defined(slug.current)] | order(title asc) {
+      tags: [SANITY_CACHE_TAGS.footerLinks],
+    }),
+    sanityFetch<SitemapItem[]>({
+      query: groq`*[_type == "service" && defined(slug.current)] | order(title asc) {
         title,
         "slug": slug.current
       }`,
-      {},
-      { next: { revalidate: 86400 } },
-    ),
-    client.fetch<SitemapItem[]>(
-      groq`*[_type == "post" && defined(slug.current)] | order(_createdAt desc)[0...10] {
+      tags: [SANITY_CACHE_TAGS.footerLinks],
+    }),
+    sanityFetch<SitemapItem[]>({
+      query: groq`*[_type == "post" && defined(slug.current)] | order(_createdAt desc)[0...10] {
         title,
         "slug": slug.current
       }`,
-      {},
-      { next: { revalidate: 86400 } },
-    ),
+      tags: [SANITY_CACHE_TAGS.footerLinks],
+    }),
   ]);
 
   return {

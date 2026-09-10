@@ -6,7 +6,7 @@ import FeaturedBlogCard from "~/components/blog/FeaturedBlogCard";
 import Breadcrumb from "~/components/Breadcrumb";
 import CallToActionSection from "~/components/CallToActionSection";
 import { FiEye, FiMessageSquare } from "react-icons/fi";
-import { client } from "~/sanity/lib/client";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
 import {
   postsQuery,
   featuredPostsQuery,
@@ -57,22 +57,28 @@ export async function generateMetadata({
 async function getPaginatedPosts(page: number): Promise<BlogPost[]> {
   const start = (page - 1) * POSTS_PER_PAGE;
   const end = start + POSTS_PER_PAGE;
-  return client.fetch(
-    postsQuery,
-    { start, end },
-    { next: { revalidate: 86400 } },
-  );
+  return sanityFetch<BlogPost[]>({
+    query: postsQuery,
+    params: { start, end },
+    tags: [SANITY_CACHE_TAGS.blogs],
+  });
 }
 
 async function getTotalPostsCount(): Promise<number> {
-  return client.fetch(postsCountQuery, {}, { next: { revalidate: 86400 } });
+  return sanityFetch<number>({
+    query: postsCountQuery,
+    tags: [SANITY_CACHE_TAGS.blogs],
+  });
 }
 
 async function getFeaturedPosts(): Promise<BlogPost[]> {
-  return client.fetch(featuredPostsQuery, {}, { next: { revalidate: 86400 } });
+  return sanityFetch<BlogPost[]>({
+    query: featuredPostsQuery,
+    tags: [SANITY_CACHE_TAGS.blogs],
+  });
 }
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = 604800;
 export const dynamicParams = true;
 
 export default async function BlogPage({ searchParams }: Props) {

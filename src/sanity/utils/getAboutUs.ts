@@ -1,6 +1,6 @@
 import { groq } from "next-sanity";
 import { cache } from "react";
-import { client } from "~/sanity/lib/client";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
 import type {
   CompanyInfo,
   Timeline,
@@ -33,11 +33,10 @@ export const getCompanyInfo = cache(async (): Promise<CompanyInfo | null> => {
     homepageFeatures
   }`;
 
-  return client.fetch<CompanyInfo | null>(
+  return sanityFetch<CompanyInfo | null>({
     query,
-    {},
-    { next: { revalidate: 86400 } },
-  );
+    tags: [SANITY_CACHE_TAGS.companyInfo],
+  });
 });
 
 // Get timeline milestones
@@ -52,7 +51,10 @@ export async function getTimeline(): Promise<Timeline[]> {
     order
   }`;
 
-  return client.fetch<Timeline[]>(query);
+  return sanityFetch<Timeline[]>({
+    query,
+    tags: [SANITY_CACHE_TAGS.about],
+  });
 }
 
 // Get featured timeline milestones only (all featured timelines, no limit)
@@ -67,7 +69,10 @@ export async function getFeaturedTimeline(): Promise<Timeline[]> {
     order
   }`;
 
-  return client.fetch<Timeline[]>(query);
+  return sanityFetch<Timeline[]>({
+    query,
+    tags: [SANITY_CACHE_TAGS.about],
+  });
 }
 
 // Get team members
@@ -88,7 +93,10 @@ export async function getTeamMembers(): Promise<TeamMember[]> {
     order
   }`;
 
-  return client.fetch<TeamMember[]>(query);
+  return sanityFetch<TeamMember[]>({
+    query,
+    tags: [SANITY_CACHE_TAGS.about],
+  });
 }
 
 // Get all team members (for a dedicated team page)
@@ -109,7 +117,10 @@ export async function getAllTeamMembers(): Promise<TeamMember[]> {
     order
   }`;
 
-  return client.fetch<TeamMember[]>(query);
+  return sanityFetch<TeamMember[]>({
+    query,
+    tags: [SANITY_CACHE_TAGS.about],
+  });
 }
 
 // Get why choose us points
@@ -125,7 +136,10 @@ export async function getWhyChooseUs(): Promise<WhyChooseUs[]> {
     active
   }`;
 
-  return client.fetch<WhyChooseUs[]>(query);
+  return sanityFetch<WhyChooseUs[]>({
+    query,
+    tags: [SANITY_CACHE_TAGS.about],
+  });
 }
 
 // Get vision, mission, and values
@@ -146,5 +160,8 @@ export async function getVisionMissionValues(): Promise<VisionMissionValues | nu
     values
   }`;
 
-  return client.fetch<VisionMissionValues | null>(query);
+  return sanityFetch<VisionMissionValues | null>({
+    query,
+    tags: [SANITY_CACHE_TAGS.about],
+  });
 }

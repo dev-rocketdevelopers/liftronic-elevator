@@ -5,7 +5,22 @@ import { submitToGoogleSheets } from "~/lib/google-sheets";
 import { generateContactFormEmail } from "~/lib/email-template";
 import { parseRecipientEmails } from "~/lib/email-recipients";
 import { protectFormSubmission } from "~/lib/request-protection";
-import { client } from "~/sanity/lib/client";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
+
+type EmailConfig = {
+  host: string;
+  password: string;
+  port: number;
+  recipientEmail?: string[] | string | null;
+  secure: boolean;
+  user: string;
+  fromName?: string | null;
+};
+
+type ContactFormSettings = {
+  contactFormGoogleSheetUrl?: string | null;
+  emailConfig?: EmailConfig | null;
+};
 
 // Fetch homePageSettings from Sanity
 async function getHomePageSettings() {
@@ -22,7 +37,10 @@ async function getHomePageSettings() {
     }
   }`;
 
-  return await client.fetch(query);
+  return sanityFetch<ContactFormSettings | null>({
+    query,
+    tags: [SANITY_CACHE_TAGS.forms],
+  });
 }
 
 export async function POST(request: NextRequest) {
@@ -45,8 +63,11 @@ export async function POST(request: NextRequest) {
 
     if (!settings) {
       return NextResponse.json(
-        { error: "Form configuration not found. Please contact the administrator." },
-        { status: 500 }
+        {
+          error:
+            "Form configuration not found. Please contact the administrator.",
+        },
+        { status: 500 },
       );
     }
 
@@ -62,7 +83,7 @@ export async function POST(request: NextRequest) {
           productInterest: validatedData.productInterest,
           location: validatedData.location || "",
           requirements: validatedData.requirements || "",
-        }
+        },
       );
 
       if (!sheetsResult.success) {
@@ -81,8 +102,11 @@ export async function POST(request: NextRequest) {
       if (!recipients.length) {
         console.error("No recipient emails configured for contact form.");
         return NextResponse.json(
-          { error: "Email configuration missing. Please contact the administrator." },
-          { status: 500 }
+          {
+            error:
+              "Email configuration missing. Please contact the administrator.",
+          },
+          { status: 500 },
         );
       }
 
@@ -117,7 +141,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Thank you for your inquiry. We'll get back to you within 24 hours.",
+      message:
+        "Thank you for your inquiry. We'll get back to you within 24 hours.",
     });
   } catch (error) {
     console.error("Contact form submission error:", error);
@@ -126,13 +151,13 @@ export async function POST(request: NextRequest) {
     if (error instanceof Error && error.name === "ZodError") {
       return NextResponse.json(
         { error: "Please check your form inputs and try again." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     return NextResponse.json(
       { error: "Something went wrong. Please try again later." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

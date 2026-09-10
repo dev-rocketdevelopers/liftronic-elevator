@@ -1,6 +1,6 @@
-import { client } from "../lib/client";
 import { productRangesQuery } from "../lib/queries";
 import type { ProductRange } from "../lib/productRangeTypes";
+import { sanityFetch, SANITY_CACHE_TAGS } from "../lib/cache";
 
 /**
  * Fetches all product ranges ordered by featured status, order field, and title
@@ -10,11 +10,10 @@ import type { ProductRange } from "../lib/productRangeTypes";
 export async function getProductRanges(
   isFeaturedFilter?: boolean,
 ): Promise<ProductRange[]> {
-  let ranges = await client.fetch<ProductRange[]>(
-    productRangesQuery,
-    {},
-    { next: { revalidate: 86400 } }, // Revalidate daily
-  );
+  let ranges = await sanityFetch<ProductRange[]>({
+    query: productRangesQuery,
+    tags: [SANITY_CACHE_TAGS.productRanges],
+  });
 
   // Apply filter if specified
   if (isFeaturedFilter) {

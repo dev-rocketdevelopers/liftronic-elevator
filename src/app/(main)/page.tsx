@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { getSocial } from "~/sanity/utils/getSocials";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
 import { getCompanyInfo } from "~/sanity/utils/getAboutUs";
-import { client } from "~/sanity/lib/client";
 import { homePageDataQuery } from "~/sanity/lib/queries";
+import { sanityFetch, SANITY_CACHE_TAGS } from "~/sanity/lib/cache";
 import type { HomePageData } from "~/sanity/lib/homePageTypes";
 import { getFeaturedServices } from "~/sanity/utils/getServices";
 import { getHomePageSeo, getOgImageUrl } from "~/sanity/utils/getHomePageSeo";
@@ -22,8 +22,8 @@ import ContactSection from "~/components/homepage/ContactSection";
 import FooterSitemapLinks from "~/components/layout/FooterSitemapLinks";
 import { getSiteUrl } from "~/lib/site-url";
 
-// ISR - revalidate daily
-export const revalidate = 86400;
+// Next.js requires a statically analyzable literal for route segment config.
+export const revalidate = 604800;
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoData = await getHomePageSeo();
@@ -89,7 +89,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 async function getHomePageData(): Promise<HomePageData> {
-  return client.fetch(homePageDataQuery, {}, { next: { revalidate: 86400 } });
+  return sanityFetch<HomePageData>({
+    query: homePageDataQuery,
+    tags: [SANITY_CACHE_TAGS.home],
+  });
 }
 
 export default async function Home() {
